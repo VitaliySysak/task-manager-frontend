@@ -24,7 +24,7 @@ export const Auth: React.FC<Props> = ({ className }) => {
       {/* Right side */}
       <aside className="relative flex justify-center items-center flex-1">
         <img
-          src="/images/bg-mobile-dark.jpg"
+          src="images/bg-mobile-dark.jpg"
           alt="Background"
           className="absolute inset-0 w-full h-full object-cover z-0"
         />

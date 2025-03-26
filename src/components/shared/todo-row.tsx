@@ -27,8 +27,6 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
     onTaskDeleted();
   };
 
-  console.log("toggleTask:", toggleTask);
-
   return (
     <>
       <li
@@ -68,7 +66,7 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
           <button
             onClick={onDelete}
             className="flex justify-center items-center w-6 h-6 sm:w-10 sm:h-10 cursor-pointer">
-            <img className="w-3 h-3 sm:w-5 sm:h-5" src="/images/icon-cross.svg" alt="cross" />
+            <img className="w-3 h-3 sm:w-5 sm:h-5" src="images/icon-cross.svg" alt="cross" />
           </button>
         </div>
       </li>

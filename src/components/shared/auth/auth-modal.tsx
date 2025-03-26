@@ -36,17 +36,26 @@ export const AuthModal: React.FC<Props> = ({ className, type, setOpen }) => {
       if (type === "sign-up") {
         const { token } = await register(data);
 
-        Cookies.set("token", token, {
-          expires: 7,
-          sameSite: "strict",
-        });
+        console.log("name:", import.meta.env.VITE_APP_ENV === "APP");
+
+        if (import.meta.env.VITE_APP_ENV === "APP") {
+          localStorage.setItem("token", token);
+        } else {
+          Cookies.set("token", token, {
+            expires: 7,
+            sameSite: "strict",
+          });
+        }
       } else {
         const { token } = await login(data);
-
-        Cookies.set("token", token, {
-          expires: 7,
-          sameSite: "strict",
-        });
+        if (import.meta.env.VITE_APP_ENV === "APP") {
+          localStorage.setItem("token", token);
+        } else {
+          Cookies.set("token", token, {
+            expires: 7,
+            sameSite: "strict",
+          });
+        }
       }
 
       setOpen(false);
