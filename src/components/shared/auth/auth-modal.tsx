@@ -36,8 +36,6 @@ export const AuthModal: React.FC<Props> = ({ className, type, setOpen }) => {
       if (type === "sign-up") {
         const { token } = await register(data);
 
-        console.log("name:", import.meta.env.VITE_APP_ENV === "APP");
-
         if (import.meta.env.VITE_APP_ENV === "APP") {
           localStorage.setItem("token", token);
         } else {
