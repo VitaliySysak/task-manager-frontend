@@ -38,7 +38,6 @@ export const AuthModal: React.FC<Props> = ({ className, type, setOpen }) => {
 
         Cookies.set("token", token, {
           expires: 7,
-          secure: true,
           sameSite: "strict",
         });
       } else {
@@ -46,7 +45,6 @@ export const AuthModal: React.FC<Props> = ({ className, type, setOpen }) => {
 
         Cookies.set("token", token, {
           expires: 7,
-          secure: true,
           sameSite: "strict",
         });
       }

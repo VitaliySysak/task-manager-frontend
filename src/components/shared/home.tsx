@@ -32,8 +32,8 @@ export const Home: React.FC<Props> = ({ className }) => {
 
   return (
     <div className="relative gap-6 min-h-screen bg-secondary">
-      <img className="w-full hidden sm:hidden md:hidden lg:block" src="/public/images/bg-desktop-dark.jpg" alt="hero" />
-      <img className="w-full sm:block md:block lg:hidden" src="/public/images/bg-mobile-dark.jpg" alt="hero" />
+      <img className="w-full hidden sm:hidden md:hidden lg:block" src="/images/bg-desktop-dark.jpg" alt="hero" />
+      <img className="w-full sm:block md:block lg:hidden" src="/images/bg-mobile-dark.jpg" alt="hero" />
       <TodoBlock />
     </div>
   );
