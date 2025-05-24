@@ -12,6 +12,7 @@ export default defineConfig({
     allowedHosts: ["task-manager.space"],
   },
   preview: {
+    host: true,
     allowedHosts: ["task-manager.space"],
   },
   resolve: {
