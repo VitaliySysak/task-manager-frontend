@@ -9,6 +9,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 3000,
+  },
+  preview: {
     allowedHosts: ["task-manager.space"],
   },
   resolve: {
