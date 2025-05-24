@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: bering152/task-manager-frontend:latest
+          tags: bering152/task-manager-frontend-prod:latest
 
   deploy:
     needs: build-and-push
@@ -44,5 +44,5 @@ jobs:
             cd /root/task-manager
             docker compose -f compose.prod.yaml down
             docker login -u ${{ secrets.REGISTRY_USER }} -p ${{ secrets.REGISTRY_PASSWORD }}
-            docker pull bering152/task-manager-frontend:latest
+            docker pull bering152/task-manager-frontend-prod:latest
             docker compose -f compose.prod.yaml up -d
