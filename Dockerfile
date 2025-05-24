@@ -1,38 +1,33 @@
-FROM node:20.11.1-alpine
-
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+# ---------- Base ----------
+FROM node:20-bullseye AS base
 WORKDIR /app
-
-###########################################
-
-# COPY package*.json ./
-
-# RUN npm install  
-
-# COPY . .        
-
-# RUN chown -R appuser:appgroup /app
-# USER appuser
-
-# EXPOSE 3000
-
-# CMD ["npm", "run", "dev"]
-
-###########################################
-
 COPY package*.json ./
 
-RUN npm install  
+# ---------- Development ----------
+FROM base AS development
+WORKDIR /app
 
-COPY .env.production .env.production
+ENV NODE_ENV=development
+RUN npm install
 COPY . .
+EXPOSE 3000
+CMD ["npm", "run", "dev"]
 
+# ---------- Production ----------
+FROM base AS build
+ENV NODE_ENV=development 
+COPY . .
+COPY .env.local .env
+RUN npm install
 RUN npm run build
 
-RUN chown -R appuser:appgroup /app
-USER appuser
-
+FROM node:20-bullseye AS production
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/.env ./
+COPY --from=build /app/dist ./dist
 EXPOSE 3000
-
 CMD ["npm", "run", "start"]
-
+        
