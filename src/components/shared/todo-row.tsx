@@ -34,8 +34,7 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
         className={cn(
           "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary h-16 lg:h-20 rounded-t-md border-b-1 border-[var(--very-dark-grayish-blue-2)]",
           className
-        )}
-      >
+        )}>
         {isLoading ? (
           <LucideLoaderCircle className="w-6 h-6 sm:w-8 sm:h-8 animate-spin" color="white" />
         ) : (
@@ -58,8 +57,7 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
             <button
               onClick={() => setShowDrawer((prev) => !prev)}
               className="flex justify-center items-center w-6 h-6 sm:w-10 sm:h-10 cursor-pointer"
-              type="button"
-            >
+              type="button">
               <IoIosArrowDown
                 color="var(--very-dark-grayish-blue)"
                 className={cn(showDrawer && "rotate-180", "w-5 h-5 sm:w-8 sm:h-8")}
@@ -69,11 +67,10 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
 
           <button
             onClick={() => appDispatch(deleteUserTask({ id }))}
-            className="flex justify-center items-center w-6 h-6 sm:w-10 sm:h-10 cursor-pointer"
-          >
+            className="flex justify-center items-center w-6 h-6 sm:w-10 sm:h-10 cursor-pointer">
             <img
               className="w-3 h-3 sm:w-5 sm:h-5"
-              src="/images/icon-cross.svg"
+              src="/icons/icon-cross.svg"
               fetchPriority="high"
               alt="cross"
             />
