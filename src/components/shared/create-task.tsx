@@ -37,7 +37,7 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
             toggleAll
               ? "bg-[image:var(--linear-gradient)] before:text-xs sm:before:text-base before:content-['✔'] before:text-white before:flex before:items-center before:justify-center pt-1"
               : "bg-transparent",
-            "border w-6 h-6 sm:w-8 sm:h-8 rounded-full border-[var(--very-dark-grayish-blue-2)] cursor-pointer"
+            "aspect-square border w-6 h-6 sm:w-8 sm:h-8 rounded-full border-[var(--very-dark-grayish-blue-2)] cursor-pointer"
           )}
         />
         <input
