@@ -29,7 +29,7 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
   return (
     <>
       <form
-        className={cn("flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary overflow-y-auto", className)}
+        className={cn("flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary overflow-y-auto dark:[color-scheme:dark] min-w-0", className)}
         onSubmit={onSubmitHandler}>
         <figure
           onClick={() => setToggleAll((prev) => !prev)}
