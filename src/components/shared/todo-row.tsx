@@ -32,7 +32,7 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
     <>
       <li
         className={cn(
-          "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary h-16 lg:h-20 rounded-t-md border-b-1 border-[var(--very-dark-grayish-blue-2)]",
+          "flex py-4 px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary min-h-16 lg:min-h-20 h-auto rounded-t-md border-b-1 border-[var(--very-dark-grayish-blue-2)]",
           className
         )}>
         {isLoading ? (
@@ -49,7 +49,7 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
           />
         )}
 
-        <p className="text-base sm:text-2xl text-[var(--primary-font)] caret-white focus:outline-none flex-1">
+        <p className="text-base sm:text-2xl text-[var(--primary-font)] caret-white focus:outline-none flex-1 break-words whitespace-normal overflow-hidden">
           {title}
         </p>
         <div className="flex gap-2">

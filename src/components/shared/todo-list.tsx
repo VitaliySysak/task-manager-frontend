@@ -24,7 +24,7 @@ export const TodoList: React.FC<Props> = ({ className }) => {
   }, [appDispatch]);
 
   return (
-    <ul className={cn("bg-primary", className)}>
+    <ul className={cn("bg-primary h-[448px] lg:h-[480px] rounded-md overflow-y-auto dark:[color-scheme:dark]", className)}>
       {filteredTasks.map(({ id, title, description, status }) => (
         <TodoRow key={id} id={id} title={title} description={description} status={status} />
       ))}
