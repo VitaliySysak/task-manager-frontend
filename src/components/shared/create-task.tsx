@@ -29,7 +29,10 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
   return (
     <>
       <form
-        className={cn("flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary overflow-y-auto dark:[color-scheme:dark] min-w-0", className)}
+        className={cn(
+          "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary overflow-y-auto overflow-x-hidden dark:[color-scheme:dark] min-w-0",
+          className
+        )}
         onSubmit={onSubmitHandler}>
         <figure
           onClick={() => setToggleAll((prev) => !prev)}
@@ -41,7 +44,7 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
           )}
         />
         <input
-          className="h-8 text-base sm:text-2xl text-[var(--light-grayish-blue)] caret-white focus:outline-none flex-1"
+          className="min-w-0 h-8 text-base sm:text-2xl text-[var(--light-grayish-blue)] caret-white focus:outline-none flex-1"
           placeholder="Create a new todo..."
           value={formData.title}
           onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
