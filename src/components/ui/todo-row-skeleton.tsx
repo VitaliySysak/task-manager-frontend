@@ -12,10 +12,12 @@ export const TodoRowSkeleton: React.FC<Props> = ({ className }) => {
         <figure className="w-6 h-6 sm:w-8 sm:h-8">
           <Skeleton className="h-full w-full rounded-full" />
         </figure>
-        <p className="flex-1 h-8">
+        <div className="flex-1 h-8">
           <Skeleton className="h-full w-full" />
-        </p>
-        <button className="w-6 h-6 sm:w-8 sm:h-8 mr-1"><Skeleton className="h-full w-full" /></button>
+        </div>
+        <button className="w-6 h-6 sm:w-8 sm:h-8 mr-1">
+          <Skeleton className="h-full w-full" />
+        </button>
       </li>
     </>
   );
