@@ -22,7 +22,7 @@ export const Home: React.FC<Props> = ({ className }) => {
 
   return (
     loggedIn && (
-      <div className="relative gap-6 min-h-screen bg-secondary flex flex-col">
+      <div className="relative gap-6 min-h-screen bg-secondary flex flex-col border-box">
         <img
           className="w-full hidden sm:hidden md:hidden lg:block"
           src="/images/bg-desktop-dark.jpg"
