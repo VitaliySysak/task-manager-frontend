@@ -29,7 +29,7 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
   return (
     <>
       <form
-        className={cn("flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary", className)}
+        className={cn("flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary overflow-y-auto", className)}
         onSubmit={onSubmitHandler}>
         <figure
           onClick={() => setToggleAll((prev) => !prev)}
@@ -46,7 +46,7 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
           value={formData.title}
           onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
         />
-        <div className="flex gap-2 pr-1 sm:pr-0">
+        <div className="flex gap-2 sm:pr-0">
           <button
             onClick={() => setFormData((prev) => ({ ...prev, showDrawer: !prev.showDrawer }))}
             className="flex justify-center items-center w-6 h-6 sm:w-10 sm:h-10 cursor-pointer"
