@@ -10,7 +10,7 @@ interface Props {
 export const Home: React.FC<Props> = ({ className }) => {
   const navigate = useNavigate();
 
-  const token = Cookies.get("token");
+  const token = Cookies.get("task-manager-auth-token");
 
   const loggedIn = !!token;
 

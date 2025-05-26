@@ -4,8 +4,8 @@ import { TodoRow } from "./todo-row";
 import { getUserTasks } from "@/src/services/tasks";
 import { useAppDispatch } from "@/src/redux/hooks";
 import { useSelector } from "react-redux";
-import { selectTasks } from "@/src/redux/slices/tasksSlice";
-import { selectTitleFilter } from "@/src/redux/slices/filterSlice";
+import { selectisTasksLoading, selectTasks } from "@/src/redux/slices/tasksSlice";
+import { selectTitleFilter } from "@/src/redux/slices/filtersSlice";
 import { TodoRowSkeleton } from "../ui/todo-row-skeleton";
 
 interface Props {
@@ -19,12 +19,13 @@ export const TodoList: React.FC<Props> = ({ className }) => {
   const filteredTasks = tasks.filter((task) =>
     task.title.toLocaleLowerCase().includes(titleFilter.toLocaleLowerCase())
   );
+  const isTasksLoading = useSelector(selectisTasksLoading);
 
   React.useEffect(() => {
     appDispatch(getUserTasks());
   }, [appDispatch]);
 
-  return tasks.length === 0 ? (
+  return isTasksLoading ? (
     <ul
       className={cn(
         "bg-primary h-[448px] lg:h-[480px] rounded-md overflow-y-auto dark:[color-scheme:dark]",

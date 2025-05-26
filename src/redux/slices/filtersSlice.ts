@@ -8,8 +8,8 @@ const initialState = {
   status: TaskStatus.TODO,
 };
 
-const filterSlice = createSlice({
-  name: "filter",
+const filtersSlice = createSlice({
+  name: "filters",
   initialState,
   reducers: {
     setTitleFilter: (state, action) => {
@@ -18,8 +18,8 @@ const filterSlice = createSlice({
   },
 });
 
-export const { setTitleFilter } = filterSlice.actions;
+export const { setTitleFilter } = filtersSlice.actions;
 export const selectTitleFilter = (state: RootState) => state.filter.title;
 
-const filterReducer = filterSlice.reducer;
-export default filterReducer;
+const filtersReducer = filtersSlice.reducer;
+export default filtersReducer;

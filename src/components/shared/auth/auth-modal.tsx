@@ -11,14 +11,18 @@ import { FormInput } from "./form-input";
 import { login, register } from "@/src/services/users";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 interface Props {
   className?: string;
   type: "sign-up" | "sign-in";
+  open: boolean;
   setOpen: (variable: boolean) => void;
 }
 
-export const AuthModal: React.FC<Props> = ({ className, type, setOpen }) => {
+export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const navigate = useNavigate();
 
   const form = useForm<AuthFormValues>({
@@ -33,30 +37,31 @@ export const AuthModal: React.FC<Props> = ({ className, type, setOpen }) => {
 
   const onSubmit = async (data: AuthFormValues) => {
     try {
+      setIsLoading(true);
+      let token;
       if (type === "sign-up") {
-        const { token } = await register(data);
-        Cookies.set("token", token, {
-          expires: 7,
-          sameSite: "strict",
-        });
+        token = await register(data);
       } else {
-        const { token } = await login(data);
-        Cookies.set("token", token, {
+        token = await login(data);
+      }
+      if (token) {
+        Cookies.set("task-manager-auth-token", token, {
           expires: 7,
           sameSite: "strict",
         });
+
+        navigate("/");
       }
-
-      setOpen(false);
-
-      navigate("/");
     } catch (error) {
-      console.error("Error while execution value:", error);
+      toast.error("Server error, try again", { icon: "❌" });
+      console.error("Error while execution onSubmit:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <Dialog open={true} onOpenChange={() => setOpen(false)}>
+    <Dialog open={open} onOpenChange={() => setOpen(false)} modal={true}>
       <DialogTitle></DialogTitle>
       <DialogContent className={cn("w-[700px] min-h-[400px]", className)}>
         <section className="">
@@ -64,7 +69,11 @@ export const AuthModal: React.FC<Props> = ({ className, type, setOpen }) => {
             <form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>
               <header className="flex items-center justify-center mb-8">
                 <div className="absolute left-1/2 transform -translate-x-1/2"></div>
-                <Button className="ml-auto rounded-full font-bold" type="submit">
+                <Button
+                  disabled={isLoading}
+                  loading={isLoading}
+                  className="ml-auto rounded-full font-bold"
+                  type="submit">
                   {type === "sign-up" ? "Sign up" : "Sign in"}
                 </Button>
               </header>

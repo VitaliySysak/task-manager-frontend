@@ -1,6 +1,7 @@
 import { CreateTask, DeleteTask, Task, TaskStatus, UpdateTask, UserTasks } from "@/@types/user-tasks";
 import { axiosInstance } from "./axios-instance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import toast from "react-hot-toast";
 
 export const getAllUsersTasks = async () => {
   return (await axiosInstance.get<Task[]>("/tasks/all")).data;
@@ -11,9 +12,11 @@ export const getUserTasks = createAsyncThunk<Task[], Partial<UserTasks | void>>(
   async (params, thunkApi) => {
     try {
       const allTasks = (await axiosInstance.get<Task[]>("/tasks", { params })).data;
-
+      
+      await new Promise(r => setTimeout(r, 8000));
       return allTasks;
     } catch (error) {
+      toast.error("Faliled to load tasks", { icon: "❌" });
       console.error("Error while fetching tasks:", error);
       return thunkApi.rejectWithValue(error);
     }

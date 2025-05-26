@@ -42,8 +42,8 @@ export const Auth: React.FC<Props> = ({ className }) => {
             variant={"outline"}>
             Log In
           </Button>
-          {openSignUp && <AuthModal type="sign-up" setOpen={setOpenSignUp} />}
-          {openSignIn && <AuthModal type="sign-in" setOpen={setOpenSignIn} />}
+          {openSignUp && <AuthModal type="sign-up" open={openSignUp} setOpen={setOpenSignUp} />}
+          {openSignIn && <AuthModal type="sign-in" open={openSignIn} setOpen={setOpenSignIn} />}
         </div>
       </aside>
     </section>

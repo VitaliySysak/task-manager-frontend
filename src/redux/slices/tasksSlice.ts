@@ -12,9 +12,14 @@ export const tasksSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getUserTasks.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.tasks = action.payload;
       })
+      .addCase(getUserTasks.pending, (state) => {
+        state.isLoading = true
+      })
       .addCase(getUserTasks.rejected, (state, action) => {
+        state.isLoading = false
         console.error("Error while execution tasks/getUserTasks:", action.error.message);
       })
       .addCase(createUserTask.fulfilled, (state, action) => {
@@ -24,14 +29,11 @@ export const tasksSlice = createSlice({
         console.error("Error while execution tasks/createUserTask:", action.error);
       })
       .addCase(updateUserTask.pending, (state, action) => {
-        state.isLoading = true;
       })
       .addCase(updateUserTask.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.tasks = state.tasks.map((task) => (task.id === action.payload.id ? action.payload : task));
       })
       .addCase(updateUserTask.rejected, (state, action) => {
-        state.isLoading = false;
         console.error("Error while execution tasks/updateUserTask:", action.error);
       })
       .addCase(deleteUserTask.fulfilled, (state, action) => {
@@ -44,7 +46,7 @@ export const tasksSlice = createSlice({
 });
 
 export const selectTasks = (state: RootState) => state.tasks.tasks;
-export const selectIsLoading = (state: RootState) => state.tasks.isLoading;
+export const selectisTasksLoading = (state: RootState) => state.tasks.isLoading;
 
 const tasksReducer = tasksSlice.reducer;
 export default tasksReducer;

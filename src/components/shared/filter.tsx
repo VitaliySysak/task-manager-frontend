@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/src/lib/utils";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { selectTitleFilter, setTitleFilter } from "@/src/redux/slices/filterSlice";
+import { selectTitleFilter, setTitleFilter } from "@/src/redux/slices/filtersSlice";
 
 interface Props {
   className?: string;

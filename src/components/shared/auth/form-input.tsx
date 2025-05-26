@@ -27,7 +27,7 @@ export const FormInput: React.FC<Props> = ({ className, name, label, ...props })
   return (
     <label className={cn("relative w-full text-gray-500 focus-within:text-primary", className)}>
       <div className="dark:bg-input/30 pt-2">
-        {label && <p className="font-medium text-sm ml-2">{label}</p>}
+        {label && <p className="font-medium text-md ml-2">{label}</p>}
         <Input
           className={cn(
             "border-0 border-b-2 border-[#657786] rounded-none dark:bg-transparent pb-0 h-8",
