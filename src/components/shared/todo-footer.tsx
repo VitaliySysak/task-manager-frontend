@@ -19,7 +19,7 @@ export const TodoFooter: React.FC<Props> = ({ className }) => {
         "flex items-center justify-between px-4 sm:px-8 h-12 bg-primary rounded-b-md text-[var(--very-dark-grayish-blue)]",
         className
       )}>
-      {taskToCompleteCount ? (
+      {taskToCompleteCount !== undefined ? (
         <h3 className="text-sm sm:text-md">
           {taskToCompleteCount} {taskToCompleteCount === 1 ? "task" : "tasks"} left
         </h3>

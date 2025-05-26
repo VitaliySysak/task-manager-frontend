@@ -4,9 +4,10 @@ import { TodoRow } from "./todo-row";
 import { getUserTasks } from "@/src/services/tasks";
 import { useAppDispatch } from "@/src/redux/hooks";
 import { useSelector } from "react-redux";
-import { selectisTasksLoading, selectTasks } from "@/src/redux/slices/tasksSlice";
+import { selectIsTasksLoading, selectTasks } from "@/src/redux/slices/tasksSlice";
 import { selectTitleFilter } from "@/src/redux/slices/filtersSlice";
 import { TodoRowSkeleton } from "../ui/todo-row-skeleton";
+import { selectErrorMessage } from "@/src/redux/slices/errorSlice";
 
 interface Props {
   className?: string;
@@ -19,7 +20,10 @@ export const TodoList: React.FC<Props> = ({ className }) => {
   const filteredTasks = tasks.filter((task) =>
     task.title.toLocaleLowerCase().includes(titleFilter.toLocaleLowerCase())
   );
-  const isTasksLoading = useSelector(selectisTasksLoading);
+  const isTasksLoading = useSelector(selectIsTasksLoading);
+  const errorMessage = useSelector(selectErrorMessage);
+
+  console.log("errorMessage", errorMessage);
 
   React.useEffect(() => {
     appDispatch(getUserTasks());
@@ -41,9 +45,17 @@ export const TodoList: React.FC<Props> = ({ className }) => {
         "bg-primary h-[448px] lg:h-[480px] rounded-t-md border-b-1 border-[var(--very-dark-grayish-blue-2)] overflow-y-auto dark:[color-scheme:dark]",
         className
       )}>
-      {filteredTasks.map(({ id, title, description, status }) => (
-        <TodoRow key={id} id={id} title={title} description={description} status={status} />
-      ))}
+      {!filteredTasks.length ? (
+        <div className="h-full flex justify-center items-center">
+          <h1 className="text-[var(--light-grayish-blue-hover)]/40 text-xl lg:text-2xl">
+            Nothing here, <br /> Add your first task for this day
+          </h1>
+        </div>
+      ) : (
+        filteredTasks.map(({ id, title, description, status }) => (
+          <TodoRow key={id} id={id} title={title} description={description} status={status} />
+        ))
+      )}
     </ul>
   );
 };

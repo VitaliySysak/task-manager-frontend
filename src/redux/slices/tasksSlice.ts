@@ -2,6 +2,7 @@ import { Task } from "@/@types/user-tasks";
 import { createUserTask, deleteUserTask, getUserTasks, updateUserTask } from "@/src/services/tasks";
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import { setError } from "./errorSlice";
 
 const initialState = { tasks: <Task[]>[], isLoading: false };
 
@@ -16,11 +17,10 @@ export const tasksSlice = createSlice({
         state.tasks = action.payload;
       })
       .addCase(getUserTasks.pending, (state) => {
-        state.isLoading = true
+        state.isLoading = true;
       })
       .addCase(getUserTasks.rejected, (state, action) => {
-        state.isLoading = false
-        console.error("Error while execution tasks/getUserTasks:", action.error.message);
+        state.isLoading = false;
       })
       .addCase(createUserTask.fulfilled, (state, action) => {
         state.tasks.push(action.payload);
@@ -28,8 +28,7 @@ export const tasksSlice = createSlice({
       .addCase(createUserTask.rejected, (state, action) => {
         console.error("Error while execution tasks/createUserTask:", action.error);
       })
-      .addCase(updateUserTask.pending, (state, action) => {
-      })
+      .addCase(updateUserTask.pending, (state, action) => {})
       .addCase(updateUserTask.fulfilled, (state, action) => {
         state.tasks = state.tasks.map((task) => (task.id === action.payload.id ? action.payload : task));
       })
@@ -46,7 +45,7 @@ export const tasksSlice = createSlice({
 });
 
 export const selectTasks = (state: RootState) => state.tasks.tasks;
-export const selectisTasksLoading = (state: RootState) => state.tasks.isLoading;
+export const selectIsTasksLoading = (state: RootState) => state.tasks.isLoading;
 
 const tasksReducer = tasksSlice.reducer;
 export default tasksReducer;

@@ -13,7 +13,9 @@ export const registerAdmin = async (data: ReginsterUser) => {
 
 export const register = async (data: ReginsterUser) => {
   try {
-    const { token } = (await axiosInstance.post("/users/register", data)).data;
+    const { token } = (
+      await axiosInstance.post("/users/register", { ...data, email: data.email.toLowerCase() })
+    ).data;
     return token;
   } catch (error) {
     if (axios.isAxiosError(error))
@@ -29,7 +31,8 @@ export const register = async (data: ReginsterUser) => {
 
 export const login = async (data: LoginUser) => {
   try {
-    const { token } = (await axiosInstance.post("/users/login", data)).data;
+    const { token } = (await axiosInstance.post("/users/login", { ...data, email: data.email.toLowerCase() }))
+      .data;
     return token;
   } catch (error) {
     if (axios.isAxiosError(error))
