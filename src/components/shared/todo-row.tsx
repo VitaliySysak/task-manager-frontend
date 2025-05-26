@@ -49,9 +49,14 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
           />
         )}
 
-        <p className="text-base sm:text-2xl text-[var(--primary-font)] caret-white focus:outline-none flex-1 break-words whitespace-normal overflow-hidden">
+        <h2
+          className={cn(
+            "text-base sm:text-2xl caret-white text-[var(--primary-font)]",
+            "focus:outline-none flex-1 break-words whitespace-normal overflow-hidden",
+            toggleTask === TaskStatus.DONE && "line-through text-[var(--very-dark-grayish-blue)]"
+          )}>
           {title}
-        </p>
+        </h2>
         <div className="flex gap-2">
           {description && (
             <button

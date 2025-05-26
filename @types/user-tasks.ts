@@ -24,6 +24,7 @@ export interface UserTasks {
 export interface CreateTask {
   title: string;
   description?: string;
+  status?: boolean;
 }
 
 export interface UpdateTask {

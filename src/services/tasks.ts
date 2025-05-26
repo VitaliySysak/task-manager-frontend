@@ -12,8 +12,7 @@ export const getUserTasks = createAsyncThunk<Task[], Partial<UserTasks | void>>(
   async (params, thunkApi) => {
     try {
       const allTasks = (await axiosInstance.get<Task[]>("/tasks", { params })).data;
-      
-      await new Promise(r => setTimeout(r, 8000));
+  
       return allTasks;
     } catch (error) {
       toast.error("Faliled to load tasks", { icon: "❌" });
@@ -28,8 +27,6 @@ export const createUserTask = createAsyncThunk(
   async (newTask: CreateTask, thunkApi) => {
     try {
       const createdTask = (await axiosInstance.post<Task>("/tasks", newTask)).data;
-      console.log("createdTask:", createdTask);
-
       return createdTask;
     } catch (error) {
       console.error("Error while execution tasks/createUserTask:", error);

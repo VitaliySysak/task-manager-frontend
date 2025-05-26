@@ -3,25 +3,33 @@ import { createUserTask } from "@/src/services/tasks";
 import { IoIosAdd, IoIosArrowDown } from "react-icons/io";
 import React from "react";
 import { useAppDispatch } from "@/src/redux/hooks";
+import toast from "react-hot-toast";
 
 interface Props {
   className?: string;
-  setToggleAll: React.Dispatch<React.SetStateAction<boolean>>;
-  toggleAll: boolean;
 }
 
-export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll }) => {
-  const initialFormData = { title: "", description: "", showDrawer: false };
+export const CreateTask: React.FC<Props> = ({ className }) => {
+  const initialFormData = { title: "", description: "", isCompleted: false, showDrawer: false };
+  const [formData, setFormData] = React.useState(initialFormData);
 
   const appDispatch = useAppDispatch();
-  const [formData, setFormData] = React.useState(initialFormData);
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-
-      appDispatch(createUserTask({ title: formData.title, description: formData.description }));
-      setFormData(initialFormData);
+      if (formData.title) {
+        appDispatch(
+          createUserTask({
+            title: formData.title,
+            description: formData.description,
+            status: formData.isCompleted,
+          })
+        );
+        setFormData(initialFormData);
+      } else {
+        toast.error("Task title can't be empty", { icon: "❌" });
+      }
     } catch (error) {
       console.error("Error while execution create-task/onSubmitHandler:", error);
     }
@@ -30,14 +38,15 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
     <>
       <form
         className={cn(
-          "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary overflow-y-auto overflow-x-hidden dark:[color-scheme:dark] min-w-0",
+          "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary h-16 lg:h-20",
+          "overflow-y-auto overflow-x-hidden dark:[color-scheme:dark] min-w-0 rounded-md",
           className
         )}
         onSubmit={onSubmitHandler}>
         <figure
-          onClick={() => setToggleAll((prev) => !prev)}
+          onClick={() => setFormData((prev) => ({ ...prev, isCompleted: !prev.isCompleted }))}
           className={cn(
-            toggleAll
+            formData.isCompleted
               ? "bg-[image:var(--linear-gradient)] before:text-xs sm:before:text-base before:content-['✔'] before:text-white before:flex before:items-center before:justify-center pt-1"
               : "bg-transparent",
             "aspect-square border w-6 h-6 sm:w-8 sm:h-8 rounded-full border-[var(--very-dark-grayish-blue-2)] cursor-pointer"
@@ -66,7 +75,7 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
       </form>
 
       {formData.showDrawer && (
-        <div className="rounded-md w-full px-4 sm:px-8 py-4 bg-[var(--very-dark-desaturated-blue)] text-white">
+        <div className="absolute top-36 sm:top-53 lg:top-57 h-[448px] lg:h-[480px]  rounded-md w-full px-4 sm:px-8 py-4 bg-[var(--very-dark-desaturated-blue)] text-white">
           <label htmlFor="description" className="block mb-2 text-sm sm:text-base">
             Add a description:
           </label>
@@ -74,7 +83,7 @@ export const CreateTask: React.FC<Props> = ({ className, toggleAll, setToggleAll
             id="description"
             value={formData.description}
             onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-            className="w-full p-2 rounded bg-[var(--very-dark-grayish-blue)] text-white resize-none focus:outline-none"
+            className="w-full p-2 rounded bg-[var(--very-dark-grayish-blue)] text-white max-h-[400px] focus:outline-none"
             rows={3}
             placeholder="Write more details about your task..."
           />

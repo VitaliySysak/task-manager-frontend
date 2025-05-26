@@ -10,7 +10,14 @@ createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <BrowserRouter>
       <App />
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          style: {
+            background: "var(--primary)",
+            color: "#fff",
+          },
+        }}
+      />
     </BrowserRouter>
   </Provider>
 );

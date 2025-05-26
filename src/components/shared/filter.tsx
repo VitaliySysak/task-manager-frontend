@@ -1,5 +1,4 @@
 import React from "react";
-import { cn } from "@/src/lib/utils";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTitleFilter, setTitleFilter } from "@/src/redux/slices/filtersSlice";
@@ -13,9 +12,9 @@ export const Filter: React.FC<Props> = ({ className }) => {
   const titleFilter = useSelector(selectTitleFilter);
 
   return (
-    <label className="flex-1 h-8 sm:h-12 flex px-3 md:px-4 items-center justify-between bg-primary rounded-md">
+    <label className="flex-1 max-w-[210px] h-8 sm:h-12 flex px-3 md:px-4 items-center justify-between bg-primary rounded-md">
       <input
-        className="w-full pt-0.5 h-8 caret-white focus:outline-none text-[var(--light-grayish-blue-hover)] text-xl"
+        className="w-full pt-0.5 h-8 caret-white focus:outline-none text-[var(--light-grayish-blue-hover)] text-md lg:text-lg"
         type="text"
         placeholder="Search"
         value={titleFilter}
