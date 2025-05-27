@@ -50,7 +50,7 @@ function Button({
       disabled={loading}
       data-slot="button"
       className={cn(
-        buttonVariants({ variant, size, className }), "!opacity-100 !min-w-[78px]"
+        buttonVariants({ variant, size, className }), "!opacity-100"
       )}
       {...props}>
       {loading ? (

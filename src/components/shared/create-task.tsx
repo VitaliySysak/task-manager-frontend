@@ -4,6 +4,8 @@ import { IoIosAdd, IoIosArrowDown } from "react-icons/io";
 import React from "react";
 import { useAppDispatch } from "@/src/redux/hooks";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { selectTasks } from "@/src/redux/slices/tasksSlice";
 
 interface Props {
   className?: string;
@@ -15,17 +17,25 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
 
   const appDispatch = useAppDispatch();
 
+  const tasks = useSelector(selectTasks);
+
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
+      const isExist = tasks.some(({ title }) => title === formData.title);
+
       if (formData.title) {
-        appDispatch(
-          createUserTask({
-            title: formData.title,
-            description: formData.description,
-            status: formData.isCompleted,
-          })
-        );
+        if (!isExist) {
+          appDispatch(
+            createUserTask({
+              title: formData.title,
+              description: formData.description,
+              isCompleted: formData.isCompleted,
+            })
+          );
+        } else {
+          toast.error("Task with same title alredy exist", { icon: "❌" });
+        }
         setFormData(initialFormData);
       } else {
         toast.error("Task title can't be empty", { icon: "❌" });

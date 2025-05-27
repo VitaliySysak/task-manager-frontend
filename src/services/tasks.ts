@@ -12,7 +12,7 @@ export const getUserTasks = createAsyncThunk<Task[], Partial<UserTasks | void>>(
   async (params, thunkApi) => {
     try {
       const allTasks = (await axiosInstance.get<Task[]>("/tasks", { params })).data;
-  
+
       return allTasks;
     } catch (error) {
       toast.error("Faliled to load tasks", { icon: "❌" });
@@ -51,13 +51,28 @@ export const updateUserTask = createAsyncThunk(
 
 export const deleteUserTask = createAsyncThunk(
   "tasks/deleteUserTask",
-  async (deleteTask: DeleteTask, thunkApi) => {
+  async (taskToDelete: DeleteTask, thunkApi) => {
     try {
-      const deletedTask = (await axiosInstance.delete<Task>("/tasks/" + deleteTask.id)).data;
+      const deletedTask = (await axiosInstance.delete<Task>("/tasks/" + taskToDelete.id)).data;
 
       return deletedTask;
     } catch (error) {
-      console.error("Error while execution value:", error);
+      console.error("Error while execution tasks/deleteUserTask:", error);
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteCompletedUserTasks = createAsyncThunk(
+  "tasks/deleteCompletedUserTasks",
+  async (tasksToDelete: number[], thunkApi) => {
+    const ids = { ids: tasksToDelete };
+    try {
+      await axiosInstance.post<{ status: boolean }>("/tasks/delete-many", ids)
+
+      return ids;
+    } catch (error) {
+      console.error("Error while execution tasks/deleteCompletedUserTasks:", error);
       return thunkApi.rejectWithValue(error);
     }
   }

@@ -63,7 +63,8 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
   return (
     <Dialog open={open} onOpenChange={() => setOpen(false)} modal={true}>
       <DialogTitle></DialogTitle>
-      <DialogContent className={cn("w-[700px] min-h-[400px] translate-y-[-70%] sm:translate-y-[-50%]", className)}>
+      <DialogContent
+        className={cn("w-[700px] min-h-[400px] translate-y-[-70%] sm:translate-y-[-50%]", className)}>
         <section className="">
           <FormProvider {...form}>
             <form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>
@@ -72,7 +73,7 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
                 <Button
                   disabled={isLoading}
                   loading={isLoading}
-                  className="ml-auto rounded-full font-bold"
+                  className="ml-auto rounded-full font-bold !min-w-[78px]"
                   type="submit">
                   {type === "sign-up" ? "Sign up" : "Sign in"}
                 </Button>

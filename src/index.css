@@ -21,6 +21,7 @@ body {
   --dark-grayish-blue: hsla(229, 12%, 29%, 0.99);
   --very-dark-grayish-blue: hsl(233, 14%, 35%);
   --very-dark-grayish-blue-2: hsl(237, 14%, 26%);
+  --active-font: #4479e7;
   --linear-gradient: linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
 
   --radius: 0.625rem;
