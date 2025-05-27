@@ -72,9 +72,9 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
 
           <button
             onClick={() => appDispatch(deleteUserTask({ id }))}
-            className="flex justify-center items-center w-6 h-6 sm:w-10 sm:h-10 cursor-pointer">
+            className="flex justify-center items-center w-8 h-8 sm:w-10 sm:h-10 cursor-pointer">
             <img
-              className="w-3 h-3 sm:w-5 sm:h-5"
+              className="w-4 h-4 sm:w-5 sm:h-5"
               src="/icons/icon-cross.svg"
               fetchPriority="high"
               alt="cross"

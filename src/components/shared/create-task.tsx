@@ -71,7 +71,7 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
         <div className="flex gap-2 sm:pr-0">
           <button
             onClick={() => setFormData((prev) => ({ ...prev, showDrawer: !prev.showDrawer }))}
-            className="flex justify-center items-center w-6 h-6 sm:w-10 sm:h-10 cursor-pointer"
+            className="flex justify-center items-center w-8 h-8 sm:w-10 sm:h-10 cursor-pointer"
             type="button">
             <IoIosArrowDown
               color="var(--very-dark-grayish-blue)"
@@ -79,7 +79,7 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
             />
           </button>
           <button className="cursor-pointer" type="submit">
-            <IoIosAdd className="w-6 h-6 sm:w-10 sm:h-10" color="var(--very-dark-grayish-blue)" size={40} />
+            <IoIosAdd className="w-8 h-8 sm:w-10 sm:h-10" color="var(--very-dark-grayish-blue)" size={40} />
           </button>
         </div>
       </form>

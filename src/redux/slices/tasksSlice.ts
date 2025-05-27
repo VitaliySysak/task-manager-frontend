@@ -65,6 +65,7 @@ export const tasksSlice = createSlice({
       })
       .addCase(deleteCompletedUserTasks.fulfilled, (state, action) => {
         state.allTasks = state.allTasks.filter(({ id }) => !action.payload.ids.includes(id));
+        state.tasks = applyFilter(state.allTasks, state.activeFilter);
       })
       .addCase(deleteCompletedUserTasks.rejected, (state, action) => {
         console.error("Error while execution tasks/deleteCompletedUserTasks:", action.error);
