@@ -9,9 +9,10 @@ import { AuthFormValues, loginFormSchema, registerFormSchema } from "./schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInput } from "./form-input";
 import { login, register } from "@/src/services/users";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { setAccessToken } from "@/src/redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 interface Props {
   className?: string;
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const navigate = useNavigate();
@@ -38,18 +40,11 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
   const onSubmit = async (data: AuthFormValues) => {
     try {
       setIsLoading(true);
-      let token;
-      if (type === "sign-up") {
-        token = await register(data);
-      } else {
-        token = await login(data);
-      }
-      if (token) {
-        Cookies.set("task-manager-auth-token", token, {
-          expires: 7,
-          sameSite: "strict",
-        });
 
+      const accessToken = type === "sign-up" ? await register(data) : await login(data);
+
+      if (accessToken) {
+        dispatch(setAccessToken(accessToken));
         navigate("/");
       }
     } catch (error) {

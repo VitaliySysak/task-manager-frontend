@@ -2,38 +2,46 @@ import { CreateTask, DeleteTask, Task, UpdateTask, UserTasks } from "@/@types/us
 import { axiosInstance } from "./axios-instance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+import { RootState } from "../redux/store";
 
 export const getAllUsersTasks = async () => {
   return (await axiosInstance.get<Task[]>("/tasks/all")).data;
 };
 
-export const getUserTasks = createAsyncThunk<Task[], Partial<UserTasks | void>>(
+export const getUserTasks = createAsyncThunk<Task[], void, { state: RootState }>(
   "tasks/getAllTasks",
-  async (params, thunkApi) => {
+  async (_, thunkApi) => {
+    const token = thunkApi.getState().auth.accessToken;
     try {
-      const allTasks = (await axiosInstance.get<Task[]>("/tasks", { params })).data;
+      const allTasks = (
+        await axiosInstance.get<Task[]>("/tasks", { headers: { Authorization: `Bearer ${token}` } })
+      ).data;
 
       return allTasks;
     } catch (error) {
-      toast.error("Faliled to load tasks", { icon: "❌" });
+      if (error) toast.error("Faliled to load tasks", { icon: "❌" });
       console.error("Error while fetching tasks:", error);
       return thunkApi.rejectWithValue(error);
     }
   }
 );
 
-export const createUserTask = createAsyncThunk(
-  "tasks/createUserTask",
-  async (newTask: CreateTask, thunkApi) => {
-    try {
-      const createdTask = (await axiosInstance.post<Task>("/tasks", newTask)).data;
-      return createdTask;
-    } catch (error) {
-      console.error("Error while execution tasks/createUserTask:", error);
-      return thunkApi.rejectWithValue(error);
-    }
+export const createUserTask = createAsyncThunk<
+  Task, 
+  CreateTask, 
+  { state: RootState }
+>("tasks/createUserTask", async (newTask, thunkApi) => {
+  const token = thunkApi.getState().auth.accessToken;
+  try {
+    const { data } = await axiosInstance.post<Task>("/tasks", newTask, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error while execution tasks/createUserTask:", error);
+    return thunkApi.rejectWithValue(error);
   }
-);
+});
 
 export const updateUserTask = createAsyncThunk(
   "tasks/updateUserTask",
@@ -68,7 +76,7 @@ export const deleteCompletedUserTasks = createAsyncThunk(
   async (tasksToDelete: number[], thunkApi) => {
     const ids = { ids: tasksToDelete };
     try {
-      await axiosInstance.post<{ status: boolean }>("/tasks/delete-many", ids)
+      await axiosInstance.post<{ status: boolean }>("/tasks/delete-many", ids);
 
       return ids;
     } catch (error) {

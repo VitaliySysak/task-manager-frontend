@@ -1,44 +1,53 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { TodoBlock } from "./todo-block";
-import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { selectAccessToken, setAccessToken } from "@/src/redux/slices/authSlice";
+import { refreshToken } from "@/src/services/users";
+import { useAppDispatch } from "@/src/redux/hooks";
+import { getUserTasks } from "@/src/services/tasks";
 
 interface Props {
   className?: string;
 }
 
 export const Home: React.FC<Props> = ({ className }) => {
+  const appDispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const token = Cookies.get("task-manager-auth-token");
-
-  const loggedIn = !!token;
+  const token = useSelector(selectAccessToken);
 
   React.useEffect(() => {
-    if (!loggedIn) {
-      navigate("/auth");
+    const refresh = async () => {
+      const accessToken = await refreshToken();
+      if (accessToken) {
+        appDispatch(setAccessToken(accessToken));
+        appDispatch(getUserTasks());
+      } else {
+        navigate("/auth");
+      }
+    };
+
+    if (!token) {
+      refresh();
     }
-  }, [loggedIn, navigate]);
+  }, [token, appDispatch, navigate]);
 
   return (
-    loggedIn && (
-      <div className="relative gap-6 min-h-screen bg-secondary flex flex-col border-box">
-        <img
-          className="w-full hidden sm:hidden md:hidden lg:block"
-          src="/images/bg-desktop-dark.jpg"
-          fetchPriority="high"
-          alt="hero"
-        />
-        <img
-          className="w-full sm:block md:block lg:hidden"
-          src="/images/bg-mobile-dark.jpg"
-          fetchPriority="high"
-          alt="hero"
-        />
-        <TodoBlock />
-      </div>
-    )
+    <div className="relative gap-6 min-h-screen bg-secondary flex flex-col border-box">
+      <img
+        className="w-full hidden sm:hidden md:hidden lg:block"
+        src="/images/bg-desktop-dark.jpg"
+        fetchPriority="high"
+        alt="hero"
+      />
+      <img
+        className="w-full sm:block md:block lg:hidden"
+        src="/images/bg-mobile-dark.jpg"
+        fetchPriority="high"
+        alt="hero"
+      />
+      <TodoBlock />
+    </div>
   );
 };

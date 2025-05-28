@@ -1,8 +1,6 @@
 import React from "react";
 import { cn } from "@/src/lib/utils";
 import { TodoRow } from "./todo-row";
-import { getUserTasks } from "@/src/services/tasks";
-import { useAppDispatch } from "@/src/redux/hooks";
 import { useSelector } from "react-redux";
 import { selectActiveFilter, selectIsTasksLoading, selectTasks } from "@/src/redux/slices/tasksSlice";
 import { selectTitleFilter } from "@/src/redux/slices/filtersSlice";
@@ -14,7 +12,7 @@ interface Props {
 }
 
 export const TodoList: React.FC<Props> = ({ className }) => {
-  const appDispatch = useAppDispatch();
+  
   const activeFilter = useSelector(selectActiveFilter);
   const titleFilter = useSelector(selectTitleFilter);
   const tasks = useSelector(selectTasks);
@@ -22,10 +20,6 @@ export const TodoList: React.FC<Props> = ({ className }) => {
     task.title.toLocaleLowerCase().includes(titleFilter.toLocaleLowerCase())
   );
   const isTasksLoading = useSelector(selectIsTasksLoading);
-
-  React.useEffect(() => {
-    appDispatch(getUserTasks());
-  }, [appDispatch]);
 
   const isActiveEmpty = activeFilter === FilterType.ACTIVE && !filteredTasks.length;
   const isCompletedEmpty = activeFilter === FilterType.COMPLETED && !filteredTasks.length;
