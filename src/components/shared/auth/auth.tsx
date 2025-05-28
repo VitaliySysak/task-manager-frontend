@@ -2,6 +2,7 @@ import React from "react";
 import { cn } from "@/src/lib/utils";
 import { Button } from "../../ui/button";
 import { AuthModal } from "./auth-modal";
+import { logOut } from "@/src/services/users";
 
 interface Props {
   className?: string;
@@ -10,6 +11,7 @@ interface Props {
 export const Auth: React.FC<Props> = ({ className }) => {
   const [openSignUp, setOpenSignUp] = React.useState(false);
   const [openSignIn, setOpenSignIn] = React.useState(false);
+
   return (
     <section className={cn("flex flex-col-reverse h-screen lg:flex-row ", className)}>
       {/* Left side */}
@@ -22,14 +24,19 @@ export const Auth: React.FC<Props> = ({ className }) => {
       </aside>
 
       {/* Right side */}
-      <aside className="relative flex justify-center items-center flex-1">
+      <aside className="relative flex flex-col justify-baseline items-center flex-1">
         <img
           src="/images/bg-mobile-dark.jpg"
           fetchPriority="high"
           alt="Background"
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
-        <div className="realtive z-10 flex flex-col px-10 mb-16 text-[var(--primary-font)] mt-28">
+        <div className="flex justify-end items-center w-full h-20 px-10">
+          <Button onClick={logOut} className=" bg-black h-10 w-20 z-10">
+            Log out
+          </Button>
+        </div>
+        <div className="realtive z-10 flex flex-col px-10 my-auto text-[var(--primary-font)]">
           <h1 className="self-start text-4xl font-bold mb-16">Stay on top of your tasks, every day</h1>
 
           <p className="font-bold mb-4">Get started with your Todo journey now.</p>

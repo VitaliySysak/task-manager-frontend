@@ -60,6 +60,13 @@ export const refreshToken = async () => {
         toast.error("Failed to refresh, network error", { icon: "❌" });
       }
     }
-    throw new Error("Registration failed");
+  }
+};
+
+export const logOut = async () => {
+  try {
+    await axiosInstance.post("/users/logout", {}, { withCredentials: true });
+  } catch (error) {
+    console.error("Error while execution users/logOut:", error);
   }
 };

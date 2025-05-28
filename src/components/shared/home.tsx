@@ -18,17 +18,17 @@ export const Home: React.FC<Props> = ({ className }) => {
   const token = useSelector(selectAccessToken);
 
   React.useEffect(() => {
-    const refresh = async () => {
-      const accessToken = await refreshToken();
-      if (accessToken) {
-        appDispatch(setAccessToken(accessToken));
-        appDispatch(getUserTasks());
-      } else {
-        navigate("/auth");
-      }
-    };
-
-    if (!token) {
+    if (token) {
+      appDispatch(getUserTasks());
+    } else {
+      const refresh = async () => {
+        const accessToken = await refreshToken();
+        if (accessToken) {
+          appDispatch(setAccessToken(accessToken));
+        } else {
+          navigate("/auth");
+        }
+      };
       refresh();
     }
   }, [token, appDispatch, navigate]);
