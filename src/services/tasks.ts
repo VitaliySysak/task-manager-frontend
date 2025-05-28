@@ -26,30 +26,31 @@ export const getUserTasks = createAsyncThunk<Task[], void, { state: RootState }>
   }
 );
 
-export const createUserTask = createAsyncThunk<
-  Task, 
-  CreateTask, 
-  { state: RootState }
->("tasks/createUserTask", async (newTask, thunkApi) => {
-  const token = thunkApi.getState().auth.accessToken;
-  try {
-    const { data } = await axiosInstance.post<Task>("/tasks", newTask, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return data;
-  } catch (error) {
-    console.error("Error while execution tasks/createUserTask:", error);
-    return thunkApi.rejectWithValue(error);
-  }
-});
-
-export const updateUserTask = createAsyncThunk(
-  "tasks/updateUserTask",
-  async (updateTask: UpdateTask, thunkApi) => {
+export const createUserTask = createAsyncThunk<Task, CreateTask, { state: RootState }>(
+  "tasks/createUserTask",
+  async (newTask, thunkApi) => {
+    const token = thunkApi.getState().auth.accessToken;
     try {
-      const updatedTask = (await axiosInstance.put<Task>("/tasks/" + updateTask.id, updateTask)).data;
+      const { data } = await axiosInstance.post<Task>("/tasks", newTask, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error) {
+      console.error("Error while execution tasks/createUserTask:", error);
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);
 
-      return updatedTask;
+export const updateUserTask = createAsyncThunk<Task, UpdateTask, { state: RootState }>(
+  "tasks/updateUserTask",
+  async (updateTask, thunkApi) => {
+    const token = thunkApi.getState().auth.accessToken;
+    try {
+      const { data } = await axiosInstance.put<Task>("/tasks/" + updateTask.id, updateTask, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
     } catch (error) {
       console.error("Error while execution tasks/updateUserTask:", error);
       return thunkApi.rejectWithValue(error);
@@ -57,13 +58,15 @@ export const updateUserTask = createAsyncThunk(
   }
 );
 
-export const deleteUserTask = createAsyncThunk(
+export const deleteUserTask = createAsyncThunk<Task, DeleteTask, { state: RootState }>(
   "tasks/deleteUserTask",
-  async (taskToDelete: DeleteTask, thunkApi) => {
+  async (taskToDelete, thunkApi) => {
+    const token = thunkApi.getState().auth.accessToken;
     try {
-      const deletedTask = (await axiosInstance.delete<Task>("/tasks/" + taskToDelete.id)).data;
-
-      return deletedTask;
+      const { data } = await axiosInstance.delete<Task>("/tasks/" + taskToDelete.id, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
     } catch (error) {
       console.error("Error while execution tasks/deleteUserTask:", error);
       return thunkApi.rejectWithValue(error);
@@ -71,12 +74,15 @@ export const deleteUserTask = createAsyncThunk(
   }
 );
 
-export const deleteCompletedUserTasks = createAsyncThunk(
+export const deleteCompletedUserTasks = createAsyncThunk<{ ids: number[] }, number[], { state: RootState }>(
   "tasks/deleteCompletedUserTasks",
-  async (tasksToDelete: number[], thunkApi) => {
+  async (tasksToDelete, thunkApi) => {
+    const token = thunkApi.getState().auth.accessToken;
     const ids = { ids: tasksToDelete };
     try {
-      await axiosInstance.post<{ status: boolean }>("/tasks/delete-many", ids);
+      await axiosInstance.post<{ status: boolean }>("/tasks/delete-many", ids, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       return ids;
     } catch (error) {
