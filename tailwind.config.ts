@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Josefin Sans"', "sans-serif"],
+      },
       colors: {
         muted: {
           DEFAULT: "hsl(var(--muted))",

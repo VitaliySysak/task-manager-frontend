@@ -28,6 +28,9 @@ export const tasksSlice = createSlice({
       state.activeFilter = FilterType.COMPLETED;
       state.tasks = applyFilter(state.allTasks, FilterType.COMPLETED);
     },
+    setTasksloading: (state, action) => {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -50,14 +53,16 @@ export const tasksSlice = createSlice({
         console.error("Error while execution tasks/createUserTask:", action.error);
       })
       .addCase(updateUserTask.fulfilled, (state, action) => {
-        state.allTasks  = state.allTasks .map((task) => (task.id === action.payload.id ? action.payload : task));
+        state.allTasks = state.allTasks.map((task) =>
+          task.id === action.payload.id ? action.payload : task
+        );
         state.tasks = applyFilter(state.allTasks, state.activeFilter);
       })
       .addCase(updateUserTask.rejected, (state, action) => {
         console.error("Error while execution tasks/updateUserTask:", action.error);
       })
       .addCase(deleteUserTask.fulfilled, (state, action) => {
-        state.allTasks  = state.allTasks .filter((task) => task.id !== action.payload.id);
+        state.allTasks = state.allTasks.filter((task) => task.id !== action.payload.id);
         state.tasks = applyFilter(state.allTasks, state.activeFilter);
       })
       .addCase(deleteUserTask.rejected, (state, action) => {
@@ -73,7 +78,7 @@ export const tasksSlice = createSlice({
   },
 });
 
-export const { setAll, setActive, setCompleted } = tasksSlice.actions;
+export const { setAll, setActive, setCompleted, setTasksloading } = tasksSlice.actions;
 export const selectTasks = (state: RootState) => state.tasks.tasks;
 export const selectIsTasksLoading = (state: RootState) => state.tasks.isLoading;
 export const selectActiveFilter = (state: RootState) => state.tasks.activeFilter;

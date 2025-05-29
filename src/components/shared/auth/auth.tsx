@@ -26,16 +26,22 @@ export const Auth: React.FC<Props> = ({ className }) => {
       {/* Right side */}
       <aside className="relative flex flex-col justify-baseline items-center flex-1">
         <img
-          src="/images/bg-mobile-dark.jpg"
+          src="/images/bg-mobile-dark.webp"
           fetchPriority="high"
           alt="Background"
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
-        <div className="flex justify-end items-center w-full h-20 px-10">
+        <img
+          src="/images/bg-desktop-dark.webp"
+          fetchPriority="high"
+          alt="Background"
+          className="hidden absolute inset-0 w-full h-full object-cover z-0"
+        />
+        {/* <div className="flex justify-end items-center w-full h-18 px-4">
           <Button onClick={logOut} className=" bg-black h-10 w-20 z-10">
             Log out
           </Button>
-        </div>
+        </div> */}
         <div className="realtive z-10 flex flex-col px-10 my-auto text-[var(--primary-font)]">
           <h1 className="self-start text-4xl font-bold mb-16">Stay on top of your tasks, every day</h1>
 

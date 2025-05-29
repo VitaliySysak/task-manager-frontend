@@ -27,7 +27,7 @@ export const TodoList: React.FC<Props> = ({ className }) => {
   return isTasksLoading ? (
     <ul
       className={cn(
-        "bg-primary h-[385px] sm:h-[439px] lg:h-[481px] rounded-t-md overflow-y-auto dark:[color-scheme:dark]",
+        "bg-primary h-[385px] sm:h-[385px] 2xl:h-[481px] rounded-t-md overflow-y-auto dark:[color-scheme:dark]",
         className
       )}>
       {[...Array(4)].map((_, i) => (
@@ -37,7 +37,7 @@ export const TodoList: React.FC<Props> = ({ className }) => {
   ) : (
     <ul
       className={cn(
-        "bg-primary h-[385px] sm:h-[439px] lg:h-[481px] rounded-t-md border-b-1",
+        "bg-primary h-[385px] sm:h-[385px] 2xl:h-[481px] rounded-t-md border-b-1",
         "border-[var(--very-dark-grayish-blue-2)] overflow-y-auto dark:[color-scheme:dark]",
         className
       )}>

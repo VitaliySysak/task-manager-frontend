@@ -48,8 +48,8 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
     <>
       <form
         className={cn(
-          "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary h-16 lg:h-20",
-          "overflow-y-auto overflow-x-hidden dark:[color-scheme:dark] min-w-0 rounded-md",
+          "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary min-w-0 h-16 lg:h-20",
+          "overflow-y-auto overflow-x-hidden dark:[color-scheme:dark] rounded-md",
           className
         )}
         onSubmit={onSubmitHandler}>
@@ -63,7 +63,8 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
           )}
         />
         <input
-          className="min-w-0 h-8 text-base sm:text-2xl text-[var(--light-grayish-blue)] caret-white focus:outline-none flex-1"
+          name="create-task"
+          className="min-w-0 h-8 text-base sm:text-xl lg:text-2xl text-[var(--light-grayish-blue)] caret-white focus:outline-none flex-1"
           placeholder="Create a new todo..."
           value={formData.title}
           onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}

@@ -1,4 +1,4 @@
-import { CreateTask, DeleteTask, Task, UpdateTask, UserTasks } from "@/@types/user-tasks";
+import { CreateTask, DeleteTask, Task, UpdateTask } from "@/@types/user-tasks";
 import { axiosInstance } from "./axios-instance";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
