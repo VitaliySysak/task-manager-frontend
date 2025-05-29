@@ -12,7 +12,7 @@ export const Filter: React.FC<Props> = ({ className }) => {
   const titleFilter = useSelector(selectTitleFilter);
 
   return (
-    <label className="flex max-w-[180px] flex-1 sm:max-w-[210px] h-8 sm:h-12 px-3 md:px-4 items-center justify-between bg-primary rounded-md">
+    <label className="mb-3 flex max-w-[180px] flex-1 sm:max-w-[210px] h-8 sm:h-12 px-3 md:px-4 items-center justify-between bg-primary rounded-md">
       <input
         name="search"
         className="w-full pt-0.5 h-8 caret-white focus:outline-none text-[var(--light-grayish-blue-hover)] text-md lg:text-lg"

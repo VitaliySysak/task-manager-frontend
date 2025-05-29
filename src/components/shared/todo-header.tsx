@@ -8,7 +8,7 @@ interface Props {
 
 export const TodoHeader: React.FC<Props> = ({ className }) => {
   return (
-    <header className="flex justify-between items-center mb-2 2xl:mb-6 sm:gap-16 md:gap-24">
+    <header className="flex justify-between items-center mb-2 md:mb-0 2xl:mb-6 sm:gap-16 md:gap-24">
       <h1 className="text-4xl sm:text-5xl lg:text-6xl font-[600] text-white tracking-[1rem]">
         TODO
       </h1>

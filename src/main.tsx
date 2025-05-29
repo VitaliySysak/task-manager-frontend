@@ -16,6 +16,7 @@ Sentry.init({
       maskAllText: false,
     }),
   ],
+  replaysOnErrorSampleRate: 1.0,
 });
 
 createRoot(document.getElementById("root")!).render(

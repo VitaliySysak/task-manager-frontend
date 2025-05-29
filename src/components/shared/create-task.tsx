@@ -48,7 +48,7 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
     <>
       <form
         className={cn(
-          "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary min-w-0 h-16 lg:h-20",
+          "flex px-4 sm:px-8 gap-4 sm:gap-8 items-center bg-primary min-w-0 min-h-16 2xl:min-h-20",
           "overflow-y-auto overflow-x-hidden dark:[color-scheme:dark] rounded-md",
           className
         )}
