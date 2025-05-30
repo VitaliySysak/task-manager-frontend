@@ -40,11 +40,11 @@ export const TodoFooter: React.FC<Props> = ({ className }) => {
     <footer className="flex flex-col gap-4">
       <div
         className={cn(
-          "flex items-center justify-between px-4 sm:px-8 h-12 bg-primary rounded-b-md text-[var(--light-grayish-blue-hover)]/40",
+          "flex items-center justify-between px-4 sm:px-8 h-12 2xl:h-16 bg-primary rounded-b-md text-[var(--light-grayish-blue-hover)]/40",
           className
         )}>
         {taskToCompleteCount !== undefined ? (
-          <h3 className="text-sm sm:text-md font-light min-w-[100px]">
+          <h3 className="text-sm sm:text-md 2xl:text-lg font-light min-w-[100px]">
             <span className="tabular-nums">{taskToCompleteCount}</span>{" "}
             {taskToCompleteCount === 1 ? "task" : "tasks"} left
           </h3>
@@ -55,7 +55,7 @@ export const TodoFooter: React.FC<Props> = ({ className }) => {
           <Button
             onClick={() => dispatch(setAll())}
             className={cn(
-              "text-[var(--light-grayish-blue-hover)]/40 p-2 cursor-pointer",
+              "2xl:text-lg text-[var(--light-grayish-blue-hover)]/40 p-2 cursor-pointer",
               activeFilter === FilterType.ALL && "text-[var(--active-font)]"
             )}>
             All
@@ -63,7 +63,7 @@ export const TodoFooter: React.FC<Props> = ({ className }) => {
           <Button
             onClick={() => dispatch(setActive())}
             className={cn(
-              "text-[var(--light-grayish-blue-hover)]/40 p-2 cursor-pointer",
+              "2xl:text-lg text-[var(--light-grayish-blue-hover)]/40 p-2 cursor-pointer",
               activeFilter === FilterType.ACTIVE && "text-[var(--active-font)]"
             )}>
             Active
@@ -71,7 +71,7 @@ export const TodoFooter: React.FC<Props> = ({ className }) => {
           <Button
             onClick={() => dispatch(setCompleted())}
             className={cn(
-              "text-[var(--light-grayish-blue-hover)]/40 p-2 cursor-pointer",
+              "2xl:text-lg text-[var(--light-grayish-blue-hover)]/40 p-2 cursor-pointer",
               activeFilter === FilterType.COMPLETED && "text-[var(--active-font)]"
             )}>
             Completed
@@ -79,7 +79,7 @@ export const TodoFooter: React.FC<Props> = ({ className }) => {
         </div>
         <Button
           onClick={deleteCompletedTasks}
-          className="text-[var(--light-grayish-blue-hover)]/40 font-light cursor-pointer">
+          className="2xl:text-lg text-[var(--light-grayish-blue-hover)]/40 font-light cursor-pointer">
           Clear Completed
         </Button>
       </div>
