@@ -17,7 +17,7 @@ CMD ["npm", "run", "dev"]
 FROM base AS build
 ENV NODE_ENV=development 
 COPY . .
-COPY .env.local .env
+COPY .env.production .env
 RUN npm install
 RUN npm run build
 
