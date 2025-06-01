@@ -11,8 +11,8 @@ import { FormInput } from "./form-input";
 import { login, register } from "@/src/services/users";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { setAccessToken } from "@/src/redux/slices/authSlice";
 import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/src/redux/hooks";
 
 interface Props {
   className?: string;
@@ -23,6 +23,7 @@ interface Props {
 
 export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) => {
   const dispatch = useDispatch();
+  const appDispatch = useAppDispatch();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const navigate = useNavigate();
@@ -30,9 +31,9 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(type === "sign-up" ? registerFormSchema : loginFormSchema),
     defaultValues: {
+      fullName: type === "sign-up" ? "" : undefined,
       email: "",
       password: "",
-      fullName: type === "sign-up" ? "" : undefined,
       confirmPassword: type === "sign-up" ? "" : undefined,
     },
   });
@@ -40,13 +41,9 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
   const onSubmit = async (data: AuthFormValues) => {
     try {
       setIsLoading(true);
-
-      const accessToken = type === "sign-up" ? await register(data) : await login(data);
-
-      if (accessToken) {
-        dispatch(setAccessToken(accessToken));
-        navigate("/");
-      }
+      const { confirmPassword, ...authData } = data;
+      type === "sign-up" ? appDispatch(register(authData)) : appDispatch(login(authData));
+      navigate("/");
     } catch (error) {
       toast.error("Server error, try again", { icon: "❌" });
       console.error("Error while execution onSubmit:", error);

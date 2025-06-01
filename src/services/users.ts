@@ -2,6 +2,7 @@ import { LoginUser, ReginsterUser, User } from "@/@types/users";
 import { axiosInstance } from "./axios-instance";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getUsers = async () => {
   return (await axiosInstance.get("/users/all")).data;
@@ -11,11 +12,15 @@ export const registerAdmin = async (data: ReginsterUser) => {
   return (await axiosInstance.post<User>("/users/admin/register", data)).data;
 };
 
-export const register = async (data: ReginsterUser) => {
+export const register = createAsyncThunk<string, ReginsterUser>("auth/register", async (data, thunkApi) => {
   try {
     const { accessToken } = (
-      await axiosInstance.post("/users/register", { ...data, email: data.email.toLowerCase() })
+      await axiosInstance.post<{ accessToken: string }>("/auth/register", {
+        ...data,
+        email: data.email.toLowerCase(),
+      })
     ).data;
+
     return accessToken;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -27,15 +32,19 @@ export const register = async (data: ReginsterUser) => {
         });
       }
     }
-    throw new Error("Registration failed");
+    return thunkApi.rejectWithValue(error);
   }
-};
+});
 
-export const login = async (data: LoginUser) => {
+export const login = createAsyncThunk<string, LoginUser>("auth/login", async (data, thunkApi) => {
   try {
     const { accessToken } = (
-      await axiosInstance.post("/users/login", { ...data, email: data.email.toLowerCase() })
+      await axiosInstance.post<{ accessToken: string }>("/auth/login", {
+        ...data,
+        email: data.email.toLowerCase(),
+      })
     ).data;
+
     return accessToken;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -45,13 +54,15 @@ export const login = async (data: LoginUser) => {
         toast.error("Wrong Email or Password", { icon: "❌" });
       }
     }
-    throw new Error("Login failed");
+    return thunkApi.rejectWithValue(error);
   }
-};
+});
 
-export const refreshToken = async () => {
+export const refreshToken = createAsyncThunk<string, void>("auth/refreshToken", async (_, thunkApi) => {
   try {
-    const { accessToken } = (await axiosInstance.post("/users/refresh", {}, { withCredentials: true })).data;
+    const { accessToken } = (
+      await axiosInstance.post<{ accessToken: string }>("/auth/refresh", {}, { withCredentials: true })
+    ).data;
 
     return accessToken;
   } catch (error) {
@@ -60,12 +71,13 @@ export const refreshToken = async () => {
         toast.error("Failed to refresh, network error", { icon: "❌" });
       }
     }
+    return thunkApi.rejectWithValue(error);
   }
-};
+});
 
 export const logOut = async () => {
   try {
-    await axiosInstance.post("/users/logout", {}, { withCredentials: true });
+    await axiosInstance.post("/auth/logout", {}, { withCredentials: true });
   } catch (error) {
     console.error("Error while execution users/logOut:", error);
   }

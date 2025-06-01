@@ -45,9 +45,10 @@ export const createUserTask = createAsyncThunk<Task, CreateTask, { state: RootSt
 export const updateUserTask = createAsyncThunk<Task, UpdateTask, { state: RootState }>(
   "tasks/updateUserTask",
   async (updateTask, thunkApi) => {
+    const { id, ...task } = updateTask;
     const token = thunkApi.getState().auth.accessToken;
     try {
-      const { data } = await axiosInstance.put<Task>("/tasks/" + updateTask.id, updateTask, {
+      const { data } = await axiosInstance.put<Task>("/tasks/" + id, task, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return data;
