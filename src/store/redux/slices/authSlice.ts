@@ -52,7 +52,7 @@ export const authSlice = createSlice({
       })
       .addCase(refreshToken.pending, (state) => {
         state.loading = true;
-      });
+      })
   },
 });
 
