@@ -7,12 +7,12 @@ import {
   setActive,
   setAll,
   setCompleted,
-} from "@/src/redux/slices/tasksSlice";
+} from "@/src/store/redux/slices/tasksSlice";
 import { TaskStatus } from "@/@types/user-tasks";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
-import { deleteCompletedUserTasks } from "@/src/services/tasks";
-import { useAppDispatch } from "@/src/redux/hooks";
+import { deleteCompletedUserTasks } from "@/src/store/tasks";
+import { useAppDispatch } from "@/src/store/redux/hooks";
 import toast from "react-hot-toast";
 import { FilterType } from "@/@types/filter";
 

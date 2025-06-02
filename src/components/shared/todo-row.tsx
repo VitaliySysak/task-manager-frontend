@@ -1,10 +1,12 @@
 import React from "react";
 import { cn } from "@/src/lib/utils";
-import { deleteUserTask, updateUserTask } from "@/src/services/tasks";
 import { IoIosArrowDown } from "react-icons/io";
 import { TaskStatus } from "@/@types/user-tasks";
-import { useAppDispatch } from "@/src/redux/hooks";
+import { useAppDispatch } from "@/src/store/redux/hooks";
 import { LucideLoaderCircle } from "lucide-react";
+import { useSelector } from "react-redux";
+import { selectTaskIdLoading } from "@/src/store/redux/slices/tasksSlice";
+import { deleteUserTask, updateUserTask } from "@/src/store/tasks";
 
 interface Props {
   className?: string;
@@ -15,17 +17,15 @@ interface Props {
 }
 
 export const TodoRow: React.FC<Props> = ({ className, id, title, description, status }) => {
-  const appDispatch = useAppDispatch();
-  const [toggleTask, setToggleTask] = React.useState<TaskStatus>(status);
+  const dispatch = useAppDispatch();
+  const loadingTaskId = useSelector(selectTaskIdLoading);
+  const isLoading = loadingTaskId === id;
   const [showDrawer, setShowDrawer] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
 
   const onUpdate = async () => {
-    setIsLoading(true);
-    const newStatus = toggleTask === TaskStatus.DONE ? TaskStatus.TODO : TaskStatus.DONE;
-    setToggleTask(newStatus);
-    await appDispatch(updateUserTask({ id, title, description, status: newStatus }));
-    setIsLoading(false);
+    const isDone = status === TaskStatus.DONE;
+    const newStatus = isDone ? TaskStatus.TODO : TaskStatus.DONE;
+    await dispatch(updateUserTask({ id, title, description, status: newStatus }));
   };
 
   return (
@@ -41,7 +41,7 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
           <figure
             onClick={onUpdate}
             className={cn(
-              toggleTask === TaskStatus.DONE
+              status === TaskStatus.DONE
                 ? "bg-[image:var(--linear-gradient)] before:text-xs sm:before:text-base before:content-['✔'] before:text-white before:flex before:items-center before:justify-center pt-1"
                 : "bg-transparent",
               "border w-6 h-6 sm:w-8 sm:h-8 rounded-full border-[var(--very-dark-grayish-blue-2)] cursor-pointer"
@@ -53,11 +53,11 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
           className={cn(
             "text-base sm:text-xl 2xl:text-2xl caret-white text-[var(--primary-font)]",
             "focus:outline-none flex-1 break-words whitespace-normal overflow-hidden",
-            toggleTask === TaskStatus.DONE && "line-through text-[var(--very-dark-grayish-blue)]"
+            status === TaskStatus.DONE && "line-through text-[var(--very-dark-grayish-blue)]"
           )}>
           {title}
         </h2>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           {description && (
             <button
               onClick={() => setShowDrawer((prev) => !prev)}
@@ -71,7 +71,7 @@ export const TodoRow: React.FC<Props> = ({ className, id, title, description, st
           )}
 
           <button
-            onClick={() => appDispatch(deleteUserTask({ id }))}
+            onClick={() => dispatch(deleteUserTask({ id }))}
             className="flex justify-center items-center w-8 h-8 sm:w-10 sm:h-10 cursor-pointer">
             <img
               className="w-4 h-4 sm:w-5 sm:h-5"

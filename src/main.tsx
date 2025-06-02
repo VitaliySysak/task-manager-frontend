@@ -3,7 +3,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./redux/store.ts";
+import { store } from "./store/redux/store.ts";
 import { Toaster } from "react-hot-toast";
 import * as Sentry from "@sentry/react";
 

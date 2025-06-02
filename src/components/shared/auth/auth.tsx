@@ -1,8 +1,7 @@
 import React from "react";
 import { cn } from "@/src/lib/utils";
 import { Button } from "../../ui/button";
-import { AuthModal } from "./auth-modal";
-import { logOut } from "@/src/services/users";
+import { AuthModal } from "./auth-modal"
 
 interface Props {
   className?: string;

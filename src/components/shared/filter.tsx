@@ -1,7 +1,7 @@
 import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
-import { selectTitleFilter, setTitleFilter } from "@/src/redux/slices/filtersSlice";
+import { selectTitleFilter, setTitleFilter } from "@/src/store/redux/slices/filtersSlice";
 
 interface Props {
   className?: string;

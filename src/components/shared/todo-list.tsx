@@ -2,8 +2,8 @@ import React from "react";
 import { cn } from "@/src/lib/utils";
 import { TodoRow } from "./todo-row";
 import { useSelector } from "react-redux";
-import { selectActiveFilter, selectIsTasksLoading, selectTasks } from "@/src/redux/slices/tasksSlice";
-import { selectTitleFilter } from "@/src/redux/slices/filtersSlice";
+import { selectActiveFilter, selectIsTasksLoading, selectTasks } from "@/src/store/redux/slices/tasksSlice";
+import { selectTitleFilter } from "@/src/store/redux/slices/filtersSlice";
 import { TodoRowSkeleton } from "../ui/todo-row-skeleton";
 import { FilterType } from "@/@types/filter";
 
@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const TodoList: React.FC<Props> = ({ className }) => {
-  
   const activeFilter = useSelector(selectActiveFilter);
   const titleFilter = useSelector(selectTitleFilter);
   const tasks = useSelector(selectTasks);

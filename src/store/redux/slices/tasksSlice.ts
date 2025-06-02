@@ -6,8 +6,8 @@ import {
   updateUserTask,
 } from "@/src/store/tasks";
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "@/src/store/redux/store";
-import { applyFilter } from "@/src/store/redux/slices/utils/task-filter";
+import { RootState } from "../store";
+import { applyFilter } from "./utils/task-filter";
 import { FilterType, TasksState } from "@/@types/filter";
 
 const initialState: TasksState = {

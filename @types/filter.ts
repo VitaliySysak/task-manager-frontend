@@ -4,6 +4,7 @@ export interface TasksState {
   allTasks: Task[];
   tasks: Task[];
   isLoading: boolean;
+  loadingTaskId: number | null;
   activeFilter: FilterType;
 }
 

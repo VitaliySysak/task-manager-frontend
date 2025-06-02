@@ -8,11 +8,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import { AuthFormValues, loginFormSchema, registerFormSchema } from "./schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInput } from "./form-input";
-import { login, register } from "@/src/services/users";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { useAppDispatch } from "@/src/redux/hooks";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "@/src/store/redux/hooks";
+import { selectAuthLoading } from "@/src/store/redux/slices/authSlice";
+import { loginUser, registerUser } from "@/src/store/auth";
 
 interface Props {
   className?: string;
@@ -22,9 +23,8 @@ interface Props {
 }
 
 export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) => {
-  const dispatch = useDispatch();
-  const appDispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const dispatch = useAppDispatch();
+  const isLoading = useSelector(selectAuthLoading);
 
   const navigate = useNavigate();
 
@@ -40,15 +40,16 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
 
   const onSubmit = async (data: AuthFormValues) => {
     try {
-      setIsLoading(true);
       const { confirmPassword, ...authData } = data;
-      type === "sign-up" ? appDispatch(register(authData)) : appDispatch(login(authData));
+      if (type === "sign-up") {
+        await dispatch(registerUser(authData)).unwrap();
+      } else {
+        await dispatch(loginUser(authData)).unwrap();
+      }
       navigate("/");
     } catch (error) {
       toast.error("Server error, try again", { icon: "❌" });
       console.error("Error while execution onSubmit:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 

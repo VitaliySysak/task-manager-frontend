@@ -1,11 +1,11 @@
 import { cn } from "@/src/lib/utils";
-import { createUserTask } from "@/src/services/tasks";
+import { createUserTask } from "@/src/store/tasks";
 import { IoIosAdd, IoIosArrowDown } from "react-icons/io";
 import React from "react";
-import { useAppDispatch } from "@/src/redux/hooks";
+import { useAppDispatch } from "@/src/store/redux/hooks";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { selectTasks } from "@/src/redux/slices/tasksSlice";
+import { selectTasks } from "@/src/store/redux/slices/tasksSlice";
 
 interface Props {
   className?: string;
