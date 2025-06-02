@@ -58,7 +58,7 @@ export const Auth: React.FC<Props> = ({ className }) => {
             </div>
           </button>
           <button
-            onClick={() => (window.location.href = import.meta.env.VITE_PUBLIC_API_URL + "auth/google/login")}
+            onClick={() => (window.location.href = import.meta.env.VITE_PUBLIC_GOOGLE_API_URL)}
             className="relative flex items-center justify-center gap-4 bg-white text-black px-6 py-2 rounded-2xl border border-gray-300 shadow hover:shadow-md transition duration-150 cursor-pointer">
             <div className="w-5 h-5">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-full h-full">
