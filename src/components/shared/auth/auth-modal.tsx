@@ -72,7 +72,7 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
                 </Button>
               </header>
               <h1 className="text-2xl font-bold mb-4 text-[#131619]">
-                {type === "sign-up" ? "Create your account" : "Log in to Twitter"}
+                {type === "sign-up" ? "Create your account" : "Log in to Task Manager"}
               </h1>
 
               {type === "sign-up" && (
