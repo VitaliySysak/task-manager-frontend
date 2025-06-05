@@ -13,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env.production
+
       - name: Log in to DockerHub
         uses: docker/login-action@v3
         with:
@@ -25,10 +28,6 @@ jobs:
           context: .
           push: true
           tags: bering152/task-manager-frontend-prod:latest
-          build-args: |
-            VITE_PUBLIC_API_URL=${{ secrets.VITE_PUBLIC_API_URL }}
-            VITE_PUBLIC_GOOGLE_AUTH_URL=${{ secrets.VITE_PUBLIC_GOOGLE_AUTH_URL }}
-            VITE_PUBLIC_GOOGLE_CALENDAR_URL=${{ secrets.VITE_PUBLIC_GOOGLE_CALENDAR_URL }}
 
   deploy:
     needs: build-and-push
