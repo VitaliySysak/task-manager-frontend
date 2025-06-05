@@ -7,7 +7,7 @@ interface Props {
 
 export const PrivacyPolicy: React.FC<Props> = ({ className }) => {
   return (
-    <div className={cn("text-white flex justify-center items-center min-h-screen", className)}>
+    <div className={cn("text-white flex justify-center items-center min-h-screen mt-8 2xl:mt-0", className)}>
       <div className="w-[80%] flex flex-col gap-2">
         <h1 className="text-3xl">Privacy Policy</h1>
 
@@ -59,6 +59,13 @@ export const PrivacyPolicy: React.FC<Props> = ({ className }) => {
         <p>
           If you have any questions or concerns regarding this policy, please contact app creator at:{" "}
           <strong>bering856@gmail.com</strong>
+        </p>
+
+        <h2 className="text-xl">7. Password Security</h2>
+        <p>
+          If you register using an email and password, your password is never stored in plain text. Instead,
+          we use a secure hashing algorithm to store only a hashed version of your password. This ensures that
+          even if our database is compromised, your actual password remains protected.
         </p>
       </div>
     </div>

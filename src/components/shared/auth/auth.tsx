@@ -16,21 +16,21 @@ export const Auth: React.FC<Props> = ({ className }) => {
   return (
     <section className={cn("flex flex-col-reverse h-screen lg:flex-row ", className)}>
       {/* Left side */}
-      <aside className="bg-secondary relative flex flex-col justify-center items-center sm:flex-1 h-[30%] sm:h-auto overflow-hidden">
-        <ul className="relative flex flex-col text-[var(--primary-font)] text-sm md:text-sm lg:text-xl font-bold space-y-5 sm:space-y-8 px-10">
+      <aside className="bg-secondary relative flex flex-col justify-baseline items-center sm:flex-1 h-[30%] sm:h-auto overflow-hidden">
+        <ul className="relative flex flex-col my-auto text-[var(--primary-font)] text-sm md:text-sm lg:text-xl font-bold space-y-5 sm:space-y-8 px-10">
           <li className="flex items-center gap-2">Stay organized and focused every day.</li>
           <li className="flex items-center gap-2">Track your tasks and boost your productivity.</li>
           <li className="flex items-center gap-2">Start your day with clear priorities.</li>
         </ul>
-        <div className="flex justify-start">
-          <Link to={"/privacy"} className="text-blue-400">
-            privacy and policy
+        <div className="flex justify-center sm:justify-start items-center w-full h-18 px-4">
+          <Link to={"/privacy"} className="text-blue-600">
+            Privacy and policy
           </Link>
         </div>
       </aside>
 
       {/* Right side */}
-      <aside className="relative flex flex-col justify-baseline items-center flex-1">
+      <aside className="relative flex flex-col justify-center items-center flex-1">
         <img
           src="/images/bg-mobile-dark.webp"
           fetchPriority="high"
