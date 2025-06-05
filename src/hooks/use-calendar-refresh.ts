@@ -11,9 +11,7 @@ export const useCalendarRefresh = () => {
 
   React.useEffect(() => {
     const refreshGoogle = async () => {
-      if (googleAccessToken) {
-        // console.log({ googleAccessToken });
-      } else {
+      if (!googleAccessToken) {
         try {
           await dispatch(calendarRefreshToken()).unwrap();
         } catch (error) {
