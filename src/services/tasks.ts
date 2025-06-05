@@ -44,3 +44,13 @@ export const deleteCompletedTasks = async (ids: { ids: number[] }, token: string
 
   return tasksId;
 };
+
+export const createGoogleEvent = async (newTask: CreateTask, token: string, googleAccessToken: string) => {
+  const taskData = { newTask, googleAccessToken };
+
+  const { data } = await axiosInstance.post<Task>("/tasks/create-event", taskData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return data;
+};

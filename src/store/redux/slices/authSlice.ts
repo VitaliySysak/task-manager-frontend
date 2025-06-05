@@ -1,15 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "@/src/store/redux/store";
-import { loginUser, registerUser, refreshToken } from "@/src/store/auth";
+import {
+  loginUser,
+  registerUser,
+  refreshToken,
+  calendarRefreshToken,
+  calendarUserLogin,
+} from "@/src/store/auth";
 
 interface AuthState {
   loading: boolean;
   accessToken: string | null;
+  googleAccessToken: string | null;
 }
 
 const initialState: AuthState = {
   loading: false,
   accessToken: null,
+  googleAccessToken: null,
 };
 
 export const authSlice = createSlice({
@@ -53,10 +61,34 @@ export const authSlice = createSlice({
       .addCase(refreshToken.pending, (state) => {
         state.loading = true;
       })
+
+      .addCase(calendarUserLogin.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(calendarUserLogin.rejected, (state, action) => {
+        state.loading = false;
+        console.error("Error while execution auth/calendarUserLogin:", action.error);
+      })
+      .addCase(calendarUserLogin.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(calendarRefreshToken.fulfilled, (state, action) => {
+        state.googleAccessToken = action.payload;
+        state.loading = false;
+      })
+      .addCase(calendarRefreshToken.rejected, (state, action) => {
+        state.loading = false;
+        console.error("Error while execution auth/calendarRefreshToken:", action.error);
+      })
+      .addCase(calendarRefreshToken.pending, (state) => {
+        state.loading = true;
+      });
   },
 });
 
 export const selectAccessToken = (state: RootState) => state.auth.accessToken;
+export const selectGoogleAccessToken = (state: RootState) => state.auth.googleAccessToken;
 export const selectAuthLoading = (state: RootState) => state.auth.loading;
 
 const authReducer = authSlice.reducer;

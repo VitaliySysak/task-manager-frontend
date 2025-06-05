@@ -1,6 +1,6 @@
 import React from "react";
 import { TodoBlock } from "./todo-block";
-import { useTasks } from "@/src/hooks/useTasks";
+import { useTasks } from "@/src/hooks/use-tasks";
 
 interface Props {
   className?: string;

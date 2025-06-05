@@ -25,6 +25,8 @@ export interface CreateTask {
   title: string;
   description?: string;
   isCompleted?: boolean;
+  startEventTime?: string | null;
+  endEventTime?: string | null;
 }
 
 export interface UpdateTask {

@@ -36,3 +36,19 @@ export const logOut = async () => {
 
   return isSuccess;
 };
+
+export const calendarLogin = async () => {
+  await axiosInstance.get<{ accessToken: string }>("/auth/calendar/connect", {
+    withCredentials: true,
+  });
+};
+
+export const calendarRefresh = async () => {
+  const { accessToken } = (
+    await axiosInstance.get<{ accessToken: string }>("/auth/calendar/refresh", {
+      withCredentials: true,
+    })
+  ).data;
+
+  return accessToken;
+};

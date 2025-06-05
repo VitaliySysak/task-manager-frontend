@@ -86,3 +86,19 @@ export const deleteCompletedUserTasks = createAsyncThunk<number[], number[], { s
     }
   }
 );
+
+export const createUserGoogleEvent = createAsyncThunk<Task, CreateTask, { state: RootState }>(
+  "tasks/createUserGoogleEvent",
+  async (newTask, thunkApi) => {
+    const token = thunkApi.getState().auth.accessToken;
+    const googleAccessToken = thunkApi.getState().auth.googleAccessToken;
+    try {
+      const taskData = await Api.tasks.createGoogleEvent(newTask, token!, googleAccessToken!);
+
+      return taskData;
+    } catch (error) {
+      console.error("Error while execution tasks/createUserGoogleEvent:", error);
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);

@@ -2,10 +2,16 @@ import React from "react";
 import { cn } from "@/src/lib/utils";
 import { TodoRow } from "./todo-row";
 import { useSelector } from "react-redux";
-import { selectActiveFilter, selectIsTasksLoading, selectTasks } from "@/src/store/redux/slices/tasksSlice";
+import {
+  selectActiveFilter,
+  selectIsTasksLoading,
+  selectTaskCreating,
+  selectTasks,
+} from "@/src/store/redux/slices/tasksSlice";
 import { selectTitleFilter } from "@/src/store/redux/slices/filtersSlice";
 import { TodoRowSkeleton } from "../ui/todo-row-skeleton";
 import { FilterType } from "@/@types/filter";
+import { Skeleton } from "@mui/material";
 
 interface Props {
   className?: string;
@@ -19,6 +25,7 @@ export const TodoList: React.FC<Props> = ({ className }) => {
     task.title.toLocaleLowerCase().includes(titleFilter.toLocaleLowerCase())
   );
   const isTasksLoading = useSelector(selectIsTasksLoading);
+  const isTaskCreating = useSelector(selectTaskCreating);
 
   const isActiveEmpty = activeFilter === FilterType.ACTIVE && !filteredTasks.length;
   const isCompletedEmpty = activeFilter === FilterType.COMPLETED && !filteredTasks.length;
@@ -57,9 +64,12 @@ export const TodoList: React.FC<Props> = ({ className }) => {
           </h1>
         </div>
       ) : (
-        filteredTasks.map(({ id, title, description, status }) => (
-          <TodoRow key={id} id={id} title={title} description={description} status={status} />
-        ))
+        <>
+          {filteredTasks.map(({ id, title, description, status }) => (
+            <TodoRow key={id} id={id} title={title} description={description} status={status} />
+          ))}
+          {isTaskCreating && <TodoRowSkeleton />}
+        </>
       )}
     </ul>
   );

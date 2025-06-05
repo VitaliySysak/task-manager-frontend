@@ -64,7 +64,7 @@ export const logOutUser = createAsyncThunk("auth/logOut", async () => {
 
 export const refreshToken = createAsyncThunk<string, void>("auth/refreshToken", async (_, thunkApi) => {
   try {
-    const accessToken = Api.auth.refresh();
+    const accessToken = await Api.auth.refresh();
 
     return accessToken;
   } catch (error: unknown) {
@@ -75,5 +75,37 @@ export const refreshToken = createAsyncThunk<string, void>("auth/refreshToken", 
       return thunkApi.rejectWithValue(error.message);
     }
     return thunkApi.rejectWithValue("Error while execution auth/refreshToken");
+  }
+});
+
+export const calendarUserLogin = createAsyncThunk("auth/calendarUserLogin", async (_, thunkApi) => {
+  try {
+    const accessToken = await Api.auth.calendarLogin();
+
+    return accessToken;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Failed to calendarUserLogin, network error", { icon: "❌" });
+      }
+      return thunkApi.rejectWithValue(error.message);
+    }
+    return thunkApi.rejectWithValue("Error while execution auth/calendarUserLogin");
+  }
+});
+
+export const calendarRefreshToken = createAsyncThunk("auth/calendarRefreshToken", async (_, thunkApi) => {
+  try {
+    const accessToken = await Api.auth.calendarRefresh();
+
+    return accessToken;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Failed to calendarRefreshToken, network error", { icon: "❌" });
+      }
+      return thunkApi.rejectWithValue(error.message);
+    }
+    return thunkApi.rejectWithValue("Error while execution auth/calendarRefreshToken");
   }
 });

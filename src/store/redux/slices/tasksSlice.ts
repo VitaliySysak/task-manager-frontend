@@ -4,6 +4,7 @@ import {
   deleteCompletedUserTasks,
   getUserTasks,
   updateUserTask,
+  createUserGoogleEvent,
 } from "@/src/store/tasks";
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
@@ -11,9 +12,19 @@ import { applyFilter } from "./utils/task-filter";
 import { FilterType, TasksState } from "@/@types/filter";
 
 const initialState: TasksState = {
+  formData: {
+    title: "",
+    description: "",
+    isCompleted: false,
+    isGoogleEvent: false,
+    startGoogleEventTime: null,
+    endGoogleEventTime: null,
+    showDrawer: false,
+  },
   allTasks: [],
   tasks: [],
   isLoading: false,
+  isTaskLoading: false,
   loadingTaskId: null,
   activeFilter: FilterType.ALL,
 };
@@ -22,6 +33,30 @@ export const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
+    setTaskTitle: (state, action) => {
+      state.formData.title = action.payload;
+    },
+    setTaskDescription: (state, action) => {
+      state.formData.description = action.payload;
+    },
+    toggleTaskIsCompleted: (state) => {
+      state.formData.isCompleted = !state.formData.isCompleted;
+    },
+    toggleTaskIsGoogleEvent: (state) => {
+      state.formData.isGoogleEvent = !state.formData.isGoogleEvent;
+    },
+    setTaskTimeStart: (state, action) => {
+      state.formData.startGoogleEventTime = action.payload;
+    },
+    setTaskTimeEnd: (state, action) => {
+      state.formData.endGoogleEventTime = action.payload;
+    },
+    setShowTaskDrawer: (state) => {
+      state.formData.showDrawer = !state.formData.showDrawer;
+    },
+    resetTaskForm: (state) => {
+      state.formData = initialState.formData;
+    },
     setAll: (state) => {
       state.activeFilter = FilterType.ALL;
       state.tasks = applyFilter(state.allTasks, FilterType.ALL);
@@ -52,11 +87,16 @@ export const tasksSlice = createSlice({
         state.isLoading = false;
       })
 
+      .addCase(createUserTask.pending, (state) => {
+        state.isTaskLoading = true;
+      })
       .addCase(createUserTask.fulfilled, (state, action) => {
+        state.isTaskLoading = false;
         state.allTasks.push(action.payload);
         state.tasks = applyFilter(state.allTasks, state.activeFilter);
       })
       .addCase(createUserTask.rejected, (state, action) => {
+        state.isTaskLoading = false;
         console.error("Error while execution tasks/createUserTask:", action.error);
       })
 
@@ -89,15 +129,43 @@ export const tasksSlice = createSlice({
       })
       .addCase(deleteCompletedUserTasks.rejected, (state, action) => {
         console.error("Error while execution tasks/deleteCompletedUserTasks:", action.error);
+      })
+
+      .addCase(createUserGoogleEvent.pending, (state) => {
+        state.isTaskLoading = true;
+      })
+      .addCase(createUserGoogleEvent.fulfilled, (state, action) => {
+        state.isTaskLoading = false;
+        state.allTasks.push(action.payload);
+        state.tasks = applyFilter(state.allTasks, state.activeFilter);
+      })
+      .addCase(createUserGoogleEvent.rejected, (state, action) => {
+        state.isTaskLoading = false;
+        console.error("Error while execution tasks/deleteCompletedUserTasks:", action.error);
       });
   },
 });
 
-export const { setAll, setActive, setCompleted, setTasksloading } = tasksSlice.actions;
+export const {
+  setTaskTitle,
+  setTaskDescription,
+  toggleTaskIsCompleted,
+  toggleTaskIsGoogleEvent,
+  setTaskTimeStart,
+  setTaskTimeEnd,
+  setShowTaskDrawer,
+  resetTaskForm,
+  setAll,
+  setActive,
+  setCompleted,
+  setTasksloading,
+} = tasksSlice.actions;
+export const selectTaskForm = (state: RootState) => state.tasks.formData;
 export const selectTasks = (state: RootState) => state.tasks.tasks;
 export const selectIsTasksLoading = (state: RootState) => state.tasks.isLoading;
 export const selectActiveFilter = (state: RootState) => state.tasks.activeFilter;
 export const selectTaskIdLoading = (state: RootState) => state.tasks.loadingTaskId;
+export const selectTaskCreating = (state: RootState) => state.tasks.isTaskLoading;
 
 const tasksReducer = tasksSlice.reducer;
 export default tasksReducer;

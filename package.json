@@ -10,8 +10,15 @@
     "start": "vite preview --host --port 3000"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^4.1.3",
+    "@mui/icons-material": "^7.1.1",
+    "@mui/material": "^7.1.1",
+    "@mui/x-date-pickers": "^8.5.0",
+    "@radix-ui/react-checkbox": "^1.3.2",
     "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.1.2",
     "@reduxjs/toolkit": "^2.7.0",
     "@sentry/react": "^9.22.0",
@@ -21,6 +28,7 @@
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.483.0",
     "postcss": "^8.5.3",

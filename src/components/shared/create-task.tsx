@@ -1,42 +1,62 @@
 import { cn } from "@/src/lib/utils";
-import { createUserTask } from "@/src/store/tasks";
+import { createUserGoogleEvent, createUserTask } from "@/src/store/tasks";
 import { IoIosAdd, IoIosArrowDown } from "react-icons/io";
 import React from "react";
 import { useAppDispatch } from "@/src/store/redux/hooks";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { selectTasks } from "@/src/store/redux/slices/tasksSlice";
+import {
+  resetTaskForm,
+  selectTaskForm,
+  selectTasks,
+  setShowTaskDrawer,
+  setTaskTitle,
+  toggleTaskIsCompleted,
+} from "@/src/store/redux/slices/tasksSlice";
+import { TodoDrawer } from "./todo-drawer";
 
 interface Props {
   className?: string;
 }
 
 export const CreateTask: React.FC<Props> = ({ className }) => {
-  const initialFormData = { title: "", description: "", isCompleted: false, showDrawer: false };
-  const [formData, setFormData] = React.useState(initialFormData);
+  const taskForm = useSelector(selectTaskForm);
 
-  const appDispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const tasks = useSelector(selectTasks);
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      const isExist = tasks.some(({ title }) => title === formData.title);
+      const isTaskGoogleEvent = taskForm.isGoogleEvent;
+      const isExist = tasks.some(({ title }) => title === taskForm.title);
 
-      if (formData.title) {
+      if (taskForm.title) {
         if (!isExist) {
-          appDispatch(
-            createUserTask({
-              title: formData.title,
-              description: formData.description,
-              isCompleted: formData.isCompleted,
-            })
-          );
+          if (!isTaskGoogleEvent) {
+            dispatch(
+              createUserTask({
+                title: taskForm.title,
+                description: taskForm.description,
+                isCompleted: taskForm.isCompleted,
+              })
+            );
+          } else {
+            dispatch(
+              createUserGoogleEvent({
+                title: taskForm.title,
+                description: taskForm.description,
+                isCompleted: taskForm.isCompleted,
+                startEventTime: taskForm.startGoogleEventTime,
+                endEventTime: taskForm.endGoogleEventTime,
+              })
+            );
+          }
         } else {
           toast.error("Task with same title alredy exist", { icon: "❌" });
         }
-        setFormData(initialFormData);
+        dispatch(resetTaskForm());
       } else {
         toast.error("Task title can't be empty", { icon: "❌" });
       }
@@ -54,9 +74,9 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
         )}
         onSubmit={onSubmitHandler}>
         <figure
-          onClick={() => setFormData((prev) => ({ ...prev, isCompleted: !prev.isCompleted }))}
+          onClick={() => dispatch(toggleTaskIsCompleted())}
           className={cn(
-            formData.isCompleted
+            taskForm.isCompleted
               ? "bg-[image:var(--linear-gradient)] before:text-xs sm:before:text-base before:content-['✔'] before:text-white before:flex before:items-center before:justify-center pt-1"
               : "bg-transparent",
             "aspect-square border w-6 h-6 sm:w-8 sm:h-8 rounded-full border-[var(--very-dark-grayish-blue-2)] cursor-pointer"
@@ -66,17 +86,17 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
           name="create-task"
           className="min-w-0 h-8 text-base sm:text-xl lg:text-2xl text-[var(--light-grayish-blue)] caret-white focus:outline-none flex-1"
           placeholder="Create a new todo..."
-          value={formData.title}
-          onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+          value={taskForm.title}
+          onChange={(e) => dispatch(setTaskTitle(e.target.value))}
         />
         <div className="flex gap-2 sm:pr-0">
           <button
-            onClick={() => setFormData((prev) => ({ ...prev, showDrawer: !prev.showDrawer }))}
+            onClick={() => dispatch(setShowTaskDrawer())}
             className="flex justify-center items-center w-8 h-8 sm:w-10 sm:h-10 cursor-pointer"
             type="button">
             <IoIosArrowDown
               color="var(--very-dark-grayish-blue)"
-              className={cn(formData.showDrawer && "rotate-180", "w-5 h-5 sm:w-8 sm:h-8")}
+              className={cn(taskForm.showDrawer && "rotate-180", "w-5 h-5 sm:w-8 sm:h-8")}
             />
           </button>
           <button className="cursor-pointer" type="submit">
@@ -85,21 +105,7 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
         </div>
       </form>
 
-      {formData.showDrawer && (
-        <div className="absolute top-36 sm:top-53 lg:top-57 h-[448px] lg:h-[480px]  rounded-md w-full px-4 sm:px-8 py-4 bg-[var(--very-dark-desaturated-blue)] text-white">
-          <label htmlFor="description" className="block mb-2 text-sm sm:text-base">
-            Add a description:
-          </label>
-          <textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-            className="w-full p-2 rounded bg-[var(--very-dark-grayish-blue)] text-white max-h-[400px] focus:outline-none"
-            rows={3}
-            placeholder="Write more details about your task..."
-          />
-        </div>
-      )}
+      {taskForm.showDrawer && <TodoDrawer formData={taskForm} />}
     </>
   );
 };
