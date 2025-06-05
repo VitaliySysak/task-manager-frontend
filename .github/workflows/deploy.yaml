@@ -28,6 +28,10 @@ jobs:
           context: .
           push: true
           tags: bering152/task-manager-frontend-prod:latest
+          build-args: |
+            VITE_PUBLIC_API_URL=${{ secrets.VITE_PUBLIC_API_URL }}
+            VITE_PUBLIC_GOOGLE_AUTH_URL=${{ secrets.VITE_PUBLIC_GOOGLE_AUTH_URL }}
+            VITE_PUBLIC_GOOGLE_CALENDAR_URL=${{ secrets.VITE_PUBLIC_GOOGLE_CALENDAR_URL }}
 
   deploy:
     needs: build-and-push
