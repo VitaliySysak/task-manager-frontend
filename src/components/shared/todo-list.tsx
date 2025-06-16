@@ -43,11 +43,11 @@ export const TodoList: React.FC<Props> = ({ className }) => {
             "bg-primary h-[385px] sm:h-[385px] 2xl:h-[481px] rounded-t-md overflow-y-auto dark:[color-scheme:dark]",
             className
           )}>
-          <div className="h-full flex justify-center items-center">
+          <div className="h-full flex justify-center items-center px-4">
             <div className="text-[var(--light-grayish-blue-hover)]/40 text-md sm:text-xl lg:text-2xl text-center">
-              <p className="mb-4">To get started with your first task, please:</p>
+              <p className="mb-4 sm:mb-2">To get started with your first task, please:</p>
               <div className="flex justify-center items-center gap-2">
-                <span className="text-xl font-medium">Log in or register</span>
+                <span className="text-md sm:text-xl lg:text-2xl font-medium">Log in or register</span>
                 <Link to="/auth">
                   <GlowButton className="text-xs cursor-pointer">Go to Auth</GlowButton>
                 </Link>
