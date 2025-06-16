@@ -1,6 +1,5 @@
 import React from "react";
 import { TodoBlock } from "./todo-block";
-import { FloatingDock } from "../ui/floating-dock";
 import { useRefresh } from "@/src/hooks/use-refresh";
 
 interface Props {
