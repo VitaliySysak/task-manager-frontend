@@ -14,12 +14,17 @@ import {
   toggleTaskIsCompleted,
 } from "@/src/store/redux/slices/tasksSlice";
 import { TodoDrawer } from "./todo-drawer";
+import { selectIsLoggedIn } from "@/src/store/redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   className?: string;
 }
 
 export const CreateTask: React.FC<Props> = ({ className }) => {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
+
   const taskForm = useSelector(selectTaskForm);
 
   const dispatch = useAppDispatch();
@@ -32,33 +37,38 @@ export const CreateTask: React.FC<Props> = ({ className }) => {
       const isTaskGoogleEvent = taskForm.isGoogleEvent;
       const isExist = tasks.some(({ title }) => title === taskForm.title);
 
-      if (taskForm.title) {
-        if (!isExist) {
-          if (!isTaskGoogleEvent) {
-            dispatch(
-              createUserTask({
-                title: taskForm.title,
-                description: taskForm.description,
-                isCompleted: taskForm.isCompleted,
-              })
-            );
+      if (isLoggedIn) {
+        if (taskForm.title) {
+          if (!isExist) {
+            if (!isTaskGoogleEvent) {
+              dispatch(
+                createUserTask({
+                  title: taskForm.title,
+                  description: taskForm.description,
+                  isCompleted: taskForm.isCompleted,
+                })
+              );
+            } else {
+              dispatch(
+                createUserGoogleEvent({
+                  title: taskForm.title,
+                  description: taskForm.description,
+                  isCompleted: taskForm.isCompleted,
+                  startEventTime: taskForm.startGoogleEventTime,
+                  endEventTime: taskForm.endGoogleEventTime,
+                })
+              );
+            }
           } else {
-            dispatch(
-              createUserGoogleEvent({
-                title: taskForm.title,
-                description: taskForm.description,
-                isCompleted: taskForm.isCompleted,
-                startEventTime: taskForm.startGoogleEventTime,
-                endEventTime: taskForm.endGoogleEventTime,
-              })
-            );
+            toast.error("Task with same title alredy exist", { icon: "❌" });
           }
+          dispatch(resetTaskForm());
         } else {
-          toast.error("Task with same title alredy exist", { icon: "❌" });
+          toast.error("Task title can't be empty", { icon: "❌" });
         }
-        dispatch(resetTaskForm());
       } else {
-        toast.error("Task title can't be empty", { icon: "❌" });
+        navigate("/auth");
+        toast.error("You need to log in!", { icon: "❌" });
       }
     } catch (error) {
       console.error("Error while execution create-task/onSubmitHandler:", error);

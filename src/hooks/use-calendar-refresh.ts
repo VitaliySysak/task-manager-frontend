@@ -6,7 +6,7 @@ import { selectGoogleAccessToken } from "@/src/store/redux/slices/authSlice";
 
 export const useCalendarRefresh = () => {
   const dispatch = useAppDispatch();
-
+  
   const googleAccessToken = useSelector(selectGoogleAccessToken);
 
   React.useEffect(() => {
@@ -20,5 +20,5 @@ export const useCalendarRefresh = () => {
       }
     };
     refreshGoogle();
-  }, [googleAccessToken]);
+  }, []);
 };

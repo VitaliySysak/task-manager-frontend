@@ -3,11 +3,7 @@ import { cn } from "@/src/lib/utils";
 import { GoogleButton } from "../ui/google-button";
 import { useCalendarRefresh } from "@/src/hooks/use-calendar-refresh";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectTaskForm,
-  setTaskDescription,
-  toggleTaskIsGoogleEvent,
-} from "@/src/store/redux/slices/tasksSlice";
+import { selectTaskForm, setTaskDescription, toggleTaskIsGoogleEvent } from "@/src/store/redux/slices/tasksSlice";
 import TimeInput from "../ui/time-input";
 import { GoogleCheckbox } from "../ui/google-checkbox";
 import { useGoogleCalendarForm } from "@/src/hooks/use-calendar-form";
@@ -31,11 +27,10 @@ export const TodoDrawer: React.FC<Props> = ({ className, formData }) => {
 
   useCalendarRefresh();
 
-  const { googleAccessToken, loading, defaultTime, onStartTimeChange, onEndTimeChange } =
-    useGoogleCalendarForm();
+  const { googleAccessToken, loading, defaultTime, onStartTimeChange, onEndTimeChange } = useGoogleCalendarForm();
 
   return (
-    <div className="absolute top-36 sm:top-43 2xl:top-57 h-[385px] sm:h-[385px] 2xl:h-[481px] rounded-md w-full px-4 sm:px-8 py-4 bg-[var(--very-dark-desaturated-blue)] text-white">
+    <div className="absolute top-36 sm:top-43 2xl:top-57 h-[385px] sm:h-[385px] 2xl:h-[481px] rounded-md w-full px-4 sm:px-8 py-4 bg-[var(--very-dark-desaturated-blue)] text-white z-10">
       <label htmlFor="description" className="block mb-2 text-sm sm:text-base">
         Add a description:
       </label>

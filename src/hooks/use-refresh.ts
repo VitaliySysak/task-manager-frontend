@@ -1,16 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/src/store/redux/hooks";
 import { setTasksloading } from "@/src/store/redux/slices/tasksSlice";
 import { refreshToken } from "@/src/store/auth";
 import { useSelector } from "react-redux";
-import { selectAccessToken } from "@/src/store/redux/slices/authSlice";
+import { selectAccessToken, setIsLoggedIn } from "@/src/store/redux/slices/authSlice";
 import { getUserTasks } from "@/src/store/tasks";
 
-export const useTasks = () => {
+export const useRefresh = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
   const accessToken = useSelector(selectAccessToken);
 
   React.useEffect(() => {
@@ -22,7 +19,7 @@ export const useTasks = () => {
           dispatch(setTasksloading(true));
           await dispatch(refreshToken()).unwrap();
         } catch (error) {
-          navigate("/auth");
+          dispatch(setIsLoggedIn(false));
         }
       }
     };

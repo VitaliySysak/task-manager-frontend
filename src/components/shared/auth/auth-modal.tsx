@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "@/src/store/redux/hooks";
-import { selectAuthLoading } from "@/src/store/redux/slices/authSlice";
+import { selectAuthLoading, setIsLoggedIn } from "@/src/store/redux/slices/authSlice";
 import { loginUser, registerUser } from "@/src/store/auth";
 
 interface Props {
@@ -46,6 +46,7 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
       } else {
         await dispatch(loginUser(authData)).unwrap();
       }
+      dispatch(setIsLoggedIn(true));
       navigate("/");
     } catch (error) {
       toast.error("Server error, try again", { icon: "❌" });
@@ -56,8 +57,7 @@ export const AuthModal: React.FC<Props> = ({ className, type, open, setOpen }) =
   return (
     <Dialog open={open} onOpenChange={() => setOpen(false)} modal={true}>
       <DialogTitle></DialogTitle>
-      <DialogContent
-        className={cn("w-[700px] min-h-[400px] translate-y-[-70%] sm:translate-y-[-50%]", className)}>
+      <DialogContent className={cn("w-[700px] min-h-[400px] translate-y-[-70%] sm:translate-y-[-50%]", className)}>
         <section className="">
           <FormProvider {...form}>
             <form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>

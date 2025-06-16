@@ -3,7 +3,8 @@ import { cn } from "@/src/lib/utils";
 import { Button } from "../../ui/button";
 import { AuthModal } from "./auth-modal";
 import { GoogleButton } from "../../ui/google-button";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { GlowButton } from "../../ui/glow-button";
 
 interface Props {
   className?: string;
@@ -12,6 +13,39 @@ interface Props {
 export const Auth: React.FC<Props> = ({ className }) => {
   const [openSignUp, setOpenSignUp] = React.useState(false);
   const [openSignIn, setOpenSignIn] = React.useState(false);
+
+  const location = useLocation();
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const type = params.get("type");
+
+    if (type === "register") {
+      setOpenSignUp(true);
+    } else if (type === "login") {
+      setOpenSignIn(true);
+    }
+  }, [location.search]);
+
+  const navigate = useNavigate();
+
+  const openModal = (type: "register" | "login") => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("type", type);
+    navigate({ search: searchParams.toString() }, { replace: true });
+
+    if (type === "register") setOpenSignUp(true);
+    else if (type === "login") setOpenSignIn(true);
+  };
+
+  const closeModal = () => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.delete("type");
+    navigate({ search: searchParams.toString() }, { replace: true });
+
+    setOpenSignUp(false);
+    setOpenSignIn(false);
+  };
 
   return (
     <section className={cn("flex flex-col-reverse h-screen lg:flex-row ", className)}>
@@ -47,18 +81,13 @@ export const Auth: React.FC<Props> = ({ className }) => {
           <h1 className="self-start text-4xl font-bold mb-12">Stay on top of your tasks, every day</h1>
 
           <p className="font-bold">Get started with your Todo journey now.</p>
-          <Button onClick={() => setOpenSignUp(true)} className="bg-black font-semibold rounded-2xl">
+          <Button onClick={() => openModal("register")} className="bg-black font-semibold rounded-2xl">
             Register
           </Button>
-          <button className="p-[3px] relative rounded-2xl" onClick={() => setOpenSignIn(true)}>
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl" />
-            <div className="px-8 py-2  bg-black rounded-2xl  relative group transition duration-200 text-white hover:bg-transparent ">
-              Log In
-            </div>
-          </button>
+          <GlowButton onClick={() => openModal("login")}>Log In</GlowButton>
           <GoogleButton />
-          {openSignUp && <AuthModal type="sign-up" open={openSignUp} setOpen={setOpenSignUp} />}
-          {openSignIn && <AuthModal type="sign-in" open={openSignIn} setOpen={setOpenSignIn} />}
+          {openSignUp && <AuthModal type="sign-up" open={openSignUp} setOpen={() => closeModal()} />}
+          {openSignIn && <AuthModal type="sign-in" open={openSignIn} setOpen={() => closeModal()} />}
         </div>
       </aside>
     </section>

@@ -49,15 +49,9 @@ function Button({
     <Comp
       disabled={loading}
       data-slot="button"
-      className={cn(
-        buttonVariants({ variant, size, className }), "!opacity-100"
-      )}
+      className={cn(buttonVariants({ variant, size, className }), "!opacity-100")}
       {...props}>
-      {loading ? (
-        <LucideLoaderCircle className="animate-spin" color="white" />
-      ) : (
-        children
-      )}
+      {loading ? <LucideLoaderCircle className="animate-spin" color="white" /> : children}
     </Comp>
   );
 }

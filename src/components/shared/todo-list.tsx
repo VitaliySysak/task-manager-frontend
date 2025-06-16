@@ -11,13 +11,18 @@ import {
 import { selectTitleFilter } from "@/src/store/redux/slices/filtersSlice";
 import { TodoRowSkeleton } from "../ui/todo-row-skeleton";
 import { FilterType } from "@/@types/filter";
-import { Skeleton } from "@mui/material";
+import { selectIsLoggedIn } from "@/src/store/redux/slices/authSlice";
+import { Button } from "../ui/button";
+import { GlowButton } from "../ui/glow-button";
+import { Link } from "react-router-dom";
 
 interface Props {
   className?: string;
 }
 
 export const TodoList: React.FC<Props> = ({ className }) => {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
   const activeFilter = useSelector(selectActiveFilter);
   const titleFilter = useSelector(selectTitleFilter);
   const tasks = useSelector(selectTasks);
@@ -31,15 +36,37 @@ export const TodoList: React.FC<Props> = ({ className }) => {
   const isCompletedEmpty = activeFilter === FilterType.COMPLETED && !filteredTasks.length;
 
   return isTasksLoading ? (
-    <ul
-      className={cn(
-        "bg-primary h-[385px] sm:h-[385px] 2xl:h-[481px] rounded-t-md overflow-y-auto dark:[color-scheme:dark]",
-        className
-      )}>
-      {[...Array(4)].map((_, i) => (
-        <TodoRowSkeleton key={i} />
-      ))}
-    </ul>
+    <>
+      {!isLoggedIn ? (
+        <ul
+          className={cn(
+            "bg-primary h-[385px] sm:h-[385px] 2xl:h-[481px] rounded-t-md overflow-y-auto dark:[color-scheme:dark]",
+            className
+          )}>
+          <div className="h-full flex justify-center items-center">
+            <div className="text-[var(--light-grayish-blue-hover)]/40 text-md sm:text-xl lg:text-2xl text-center">
+              <p className="mb-4">To get started with your first task, please:</p>
+              <div className="flex justify-center items-center gap-2">
+                <span className="text-xl font-medium">Log in or register</span>
+                <Link to="/auth">
+                  <GlowButton className="text-xs cursor-pointer">Go to Auth</GlowButton>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </ul>
+      ) : (
+        <ul
+          className={cn(
+            "bg-primary h-[385px] sm:h-[385px] 2xl:h-[481px] rounded-t-md overflow-y-auto dark:[color-scheme:dark]",
+            className
+          )}>
+          {[...Array(4)].map((_, i) => (
+            <TodoRowSkeleton key={i} />
+          ))}
+        </ul>
+      )}
+    </>
   ) : (
     <ul
       className={cn(

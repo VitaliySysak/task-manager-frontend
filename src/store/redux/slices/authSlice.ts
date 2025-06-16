@@ -1,20 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "@/src/store/redux/store";
-import {
-  loginUser,
-  registerUser,
-  refreshToken,
-  calendarRefreshToken,
-  calendarUserLogin,
-} from "@/src/store/auth";
+import { loginUser, registerUser, refreshToken, calendarRefreshToken, calendarUserLogin } from "@/src/store/auth";
 
 interface AuthState {
+  isLoggedIn: boolean;
   loading: boolean;
   accessToken: string | null;
   googleAccessToken: string | null;
 }
 
 const initialState: AuthState = {
+  isLoggedIn: true,
   loading: false,
   accessToken: null,
   googleAccessToken: null,
@@ -23,7 +19,11 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setIsLoggedIn: (state, action) => {
+      state.isLoggedIn = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.fulfilled, (state, action) => {
@@ -87,9 +87,12 @@ export const authSlice = createSlice({
   },
 });
 
+export const { setIsLoggedIn } = authSlice.actions;
+
 export const selectAccessToken = (state: RootState) => state.auth.accessToken;
 export const selectGoogleAccessToken = (state: RootState) => state.auth.googleAccessToken;
 export const selectAuthLoading = (state: RootState) => state.auth.loading;
+export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;
 
 const authReducer = authSlice.reducer;
 export default authReducer;
