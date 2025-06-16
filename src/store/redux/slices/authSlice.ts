@@ -56,7 +56,9 @@ export const authSlice = createSlice({
       })
       .addCase(refreshToken.rejected, (state, action) => {
         state.loading = false;
-        console.error("Error while execution auth/refreshToken:", action.error);
+        if (action.payload !== "No refresh token") {
+          console.error("Error while execution auth/refreshToken:", action.error);
+        }
       })
       .addCase(refreshToken.pending, (state) => {
         state.loading = true;

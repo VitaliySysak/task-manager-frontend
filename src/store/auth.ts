@@ -13,28 +13,25 @@ export const registerAdmin = async (data: ReginsterUser) => {
   return (await axiosInstance.post<User>("/auth/admin/register", data)).data;
 };
 
-export const registerUser = createAsyncThunk<string, ReginsterUser>(
-  "auth/register",
-  async (data, thunkApi) => {
-    try {
-      const accessToken = await Api.auth.register(data);
+export const registerUser = createAsyncThunk<string, ReginsterUser>("auth/register", async (data, thunkApi) => {
+  try {
+    const accessToken = await Api.auth.register(data);
 
-      return accessToken;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.code === "ERR_NETWORK") {
-          toast.error("Failed to register, network error", { icon: "❌" });
-        } else if (error.response?.data?.message === "User with email " + data.email + " already exists") {
-          toast.error("User with email " + data.email + " already exists", {
-            icon: "❌",
-          });
-        }
-        return thunkApi.rejectWithValue(error.message);
+    return accessToken;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.code === "ERR_NETWORK") {
+        toast.error("Failed to register, network error", { icon: "❌" });
+      } else if (error.response?.data?.message === "User with email " + data.email + " already exists") {
+        toast.error("User with email " + data.email + " already exists", {
+          icon: "❌",
+        });
       }
-      return thunkApi.rejectWithValue("Error while execution auth/register");
+      return thunkApi.rejectWithValue(error.message);
     }
+    return thunkApi.rejectWithValue("Error while execution auth/register");
   }
-);
+});
 
 export const loginUser = createAsyncThunk<string, LoginUser>("auth/login", async (data, thunkApi) => {
   try {
@@ -71,8 +68,11 @@ export const refreshToken = createAsyncThunk<string, void>("auth/refreshToken", 
     if (axios.isAxiosError(error)) {
       if (error.code === "ERR_NETWORK") {
         toast.error("Failed to refresh, network error", { icon: "❌" });
+      } else if (error.response?.status === 400) {
+        return thunkApi.rejectWithValue("No refresh token");
+      } else {
+        return thunkApi.rejectWithValue(error.message);
       }
-      return thunkApi.rejectWithValue(error.message);
     }
     return thunkApi.rejectWithValue("Error while execution auth/refreshToken");
   }
